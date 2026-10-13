@@ -86,6 +86,7 @@ p a:not([class]) { text-decoration: underline; text-underline-offset: 2px; }
 
 .pilha    { display: flex; flex-direction: column; gap: var(--spacing-lg); }
 .pilha-sm { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.pilha-xs { display: flex; flex-direction: column; gap: var(--spacing-xs); }
 .pilha-xl { display: flex; flex-direction: column; gap: var(--spacing-3xl); }
 .linha    { display: flex; align-items: center; gap: var(--spacing-sm); }
 .linha--entre { justify-content: space-between; }

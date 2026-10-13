@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 8 (frete pelo CEP)**. A etapa 7 (painel da loja) ficou para depois. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular.
+- Situação: **etapa 7 (painel da loja)**. Já funcionam o painel da loja (pedidos, produtos, estoque e catálogo), o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular, além do frete por região do CEP.
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -52,7 +52,7 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 | Tipo | E-mail | Senha |
 |---|---|---|
 | Cliente | `ana@exemplo.com` | `triade123` |
-| Painel da loja (etapa futura) | `admin@triade.com.br` | `triade123` |
+| Painel da loja (<http://localhost/Triade_esportes_web/admin>) | `admin@triade.com.br` | `triade123` |
 
 ### Pagamento de teste (tudo simulado, nada é cobrado)
 
@@ -67,6 +67,23 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 
 Entre com `ana@exemplo.com` / `triade123`. Ela já tem 2 pedidos (um a caminho, com código de rastreio), 1 endereço e favoritos.
 O "Esqueci minha senha" não manda e-mail de verdade: o link para criar a senha nova aparece na própria tela, marcado como simulação.
+
+### Painel da loja
+
+Abra `/admin` (ex.: <http://localhost/Triade_esportes_web/admin>) e entre com `admin@triade.com.br` / `triade123`. O login é separado da conta de cliente: a conta da Ana não entra no painel, e entrar no painel não entra na loja como cliente.
+
+| Aba | O que faz |
+|---|---|
+| Painel | Pedidos para separar, aguardando pagamento, pedidos do dia, vendas pagas do mês e tamanhos com estoque acabando (2 peças ou menos). |
+| Pedidos | Lista com filtros e busca por número, nome ou e-mail. No pedido, o botão do próximo passo: confirmar pagamento, começar a separar, marcar como enviado (pede o código de rastreio), avisar que está pronto para retirar e marcar como entregue. Cada passo aparece no rastreio do cliente. |
+| Produtos | Cadastrar, editar, ocultar e excluir produtos: preço, promoção, tamanhos com estoque, até 6 fotos (JPG, PNG ou WebP, até 3 MB), selos e destaque no Início. |
+| Catálogo | Esportes e categorias. Um esporte novo só aparece na loja quando tiver produtos. |
+
+Regras do painel:
+- O pedido só anda para frente. Cancelar só vale antes de sair da loja, e as peças voltam para o estoque (o estoque sai quando o cliente compra). Pedido já pago e cancelado precisa ter o dinheiro devolvido por fora: o painel avisa, mas não faz estorno.
+- Produto que já foi vendido não pode ser excluído, só ocultado ("Aparece na loja" desligado), para não estragar o histórico dos pedidos. Esporte e categoria só são excluídos vazios.
+- As fotos vão para `assets/img/produtos/` com um nome novo e aleatório. O arquivo é conferido pelo conteúdo, não pela extensão, então um programa disfarçado de `.jpg` é recusado. Essas fotos ficam fora do GitHub (`.gitignore`): para levar para a hospedagem, envie a pasta junto.
+- **Troque a senha do painel** ("Trocar senha do painel", no Painel) antes de publicar o link na InfinityFree. A senha `triade123` está neste README, que é público.
 
 O frete também é simulado: o preço e o prazo mudam conforme a região do CEP dentro do RS (tabela abaixo). Dá para calcular na página do produto. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
 
@@ -100,6 +117,18 @@ Triade_esportes_web/
 ├── offline.html         29 · Sem internet (página guardada pelo sw.js)
 ├── sw.js                ajudante do navegador: tela Sem internet e arquivos guardados
 ├── manifest.json        nome, cores e ícones para instalar o site no celular
+├── admin/               painel da loja (login separado do cliente)
+│   ├── entrar.php       entrar no painel
+│   ├── index.php        início: números, últimos pedidos e estoque acabando
+│   ├── pedidos.php      lista de pedidos com filtros e busca
+│   ├── pedido.php       detalhe do pedido e troca de status (rastreio, cancelar)
+│   ├── produtos.php     lista de produtos
+│   ├── produto.php      cadastrar ou editar produto (tamanhos, estoque e fotos)
+│   ├── catalogo.php     esportes e categorias
+│   ├── esporte.php      cadastrar ou editar esporte
+│   ├── categoria.php    cadastrar ou editar categoria
+│   ├── senha.php        trocar a senha do painel
+│   └── sair.php         sair do painel
 ├── api/sacola.php       adiciona, altera e remove itens da sacola
 ├── api/favoritos.php    liga e desliga o coração de favorito
 ├── conta/               conta do cliente
@@ -133,15 +162,16 @@ Triade_esportes_web/
 │   ├── componentes.php  HTML dos componentes (card de produto, selos, painel...)
 │   ├── catalogo.php     consultas de produtos, busca e filtros
 │   ├── sacola.php       sacola guardada na sessão
-│   ├── frete.php        opções de entrega e prazos (valores fixos por enquanto)
+│   ├── frete.php        opções de entrega, preço e prazo por região do CEP
 │   ├── checkout.php     passos da compra, validações e criação do pedido
 │   ├── conta.php        login, cadastro, senha, pedidos, endereços e favoritos
+│   ├── admin.php        tudo do painel da loja (só as páginas de admin/ carregam)
 │   └── layout.php       moldura das páginas (cabeçalho e barra de abas)
 ├── assets/
 │   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css, telas.css
-│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js, conta.js
+│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js, conta.js, admin.js
 │   ├── fonts/           fonte Inter (licença livre OFL)
-│   └── img/             icones.svg (ícones e silhuetas dos produtos) e app/ (ícone provisório do site)
+│   └── img/             icones.svg (ícones e silhuetas dos produtos), app/ (ícone provisório do site) e produtos/ (fotos enviadas pelo painel)
 ├── sql/                 scripts do banco de dados
 │   ├── 00_criar_banco.sql
 │   ├── 01_estrutura.sql
@@ -196,13 +226,13 @@ Prazos em dias úteis. PAC grátis acima de R$ 399 em todo o RS. Retirada em Sã
 |---|---|
 | `esportes`, `categorias`, `produtos` | catálogo em Esporte → Categoria → Produto |
 | `produto_tamanhos` | estoque de cada tamanho (estoque 0 aparece riscado) |
-| `produto_imagens` | fotos dos produtos (vazio até ter fotos reais) |
+| `produto_imagens` | fotos dos produtos enviadas pelo painel (sem foto, aparece a silhueta) |
 | `clientes`, `enderecos`, `favoritos` | contas de clientes |
 | `recuperacao_senha` | códigos para trocar a senha |
 | `pedidos`, `pedido_itens`, `pedido_historico` | pedidos, itens e linha do tempo do rastreio |
-| `administradores` | acesso ao painel da loja (etapa futura) |
+| `administradores` | acesso ao painel da loja |
 
-Para incluir um esporte novo (ex.: vôlei), basta inserir uma linha em `esportes` e as categorias dele em `categorias`. Não precisa mudar código.
+Para incluir um esporte novo (ex.: vôlei), use a aba Catálogo do painel. Não precisa mudar código.
 
 ## Segurança aplicada
 
@@ -211,3 +241,5 @@ Para incluir um esporte novo (ex.: vôlei), basta inserir uma linha em `esportes
 - Todo texto mostrado na tela passa por `e()`, o que impede que alguém injete código na página.
 - Formulários com código CSRF, que impede envio a partir de outro site.
 - Pastas `includes/` e `sql/` bloqueadas para acesso pelo navegador.
+- Painel da loja com login próprio, limite de 5 tentativas erradas e páginas fora do Google (`noindex`).
+- Fotos enviadas conferidas pelo conteúdo e salvas com nome aleatório. A pasta das fotos não deixa rodar programas.

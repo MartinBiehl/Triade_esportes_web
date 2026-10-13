@@ -16,7 +16,7 @@ const SQL_PRODUTO_CARD = '
       JOIN esportes e   ON e.id = c.esporte_id   AND e.ativo = 1
 ';
 
-/** Esportes ativos com o número de produtos e as categorias de cada um. */
+/** Esportes ativos que têm produtos, com o número de produtos e as categorias de cada um. */
 function esportes_com_categorias(): array
 {
     $esportes = consulta(
@@ -26,6 +26,7 @@ function esportes_com_categorias(): array
            LEFT JOIN produtos p   ON p.categoria_id = c.id AND p.ativo = 1
           WHERE e.ativo = 1
           GROUP BY e.id
+         HAVING total_produtos > 0 -- esporte recém-criado no painel só aparece quando ganhar produtos
           ORDER BY e.ordem, e.nome'
     )->fetchAll();
 

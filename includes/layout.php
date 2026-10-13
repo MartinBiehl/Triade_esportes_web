@@ -13,6 +13,9 @@
  *   nav        cabeçalho inline em vidro das telas internas:
  *              ['titulo' => 'Produto', 'voltar' => url(...), 'acoes' => '<button ...>']
  *   classe     classes extras para o <main>
+ *   abas       troca as abas da barra de baixo (o painel da loja usa as suas):
+ *              ['chave' => [rótulo, ícone, link, contador opcional]]
+ *   robots     ex.: 'noindex, nofollow' para o Google não listar a página
  */
 
 $GLOBALS['pagina_atual'] = [];
@@ -29,7 +32,7 @@ function sacola_quantidade(): int
 
 function pagina_inicio(array $opcoes = []): void
 {
-    $opcoes += ['titulo' => null, 'aba' => null, 'nav' => null, 'classe' => '', 'descricao' => null];
+    $opcoes += ['titulo' => null, 'aba' => null, 'nav' => null, 'classe' => '', 'descricao' => null, 'abas' => null, 'robots' => null];
     $GLOBALS['pagina_atual'] = $opcoes;
 
     $titulo = $opcoes['titulo'] ? $opcoes['titulo'] . ' · ' . LOJA_NOME : LOJA_NOME;
@@ -54,6 +57,9 @@ function pagina_inicio(array $opcoes = []): void
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#F8F8FA">
   <meta name="description" content="<?= e($descricao) ?>">
+  <?php if ($opcoes['robots']): ?>
+  <meta name="robots" content="<?= e($opcoes['robots']) ?>">
+  <?php endif; ?>
   <title><?= e($titulo) ?></title>
   <link rel="preload" href="<?= e(url('assets/fonts/inter-variavel.woff2')) ?>" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="<?= e(asset('css/tokens.css')) ?>">
@@ -97,26 +103,26 @@ function pagina_inicio(array $opcoes = []): void
 function pagina_fim(array $opcoes = []): void
 {
     $aba = $GLOBALS['pagina_atual']['aba'] ?? null;
-    $abas = [
+    $abas = $GLOBALS['pagina_atual']['abas'] ?? [
         'inicio'   => ['Início',   'inicio',   'index.php'],
         'buscar'   => ['Buscar',   'buscar',   'buscar.php'],
         'esportes' => ['Esportes', 'esportes', 'esportes.php'],
-        'sacola'   => ['Sacola',   'sacola',   'sacola.php'],
+        'sacola'   => ['Sacola',   'sacola',   'sacola.php', sacola_quantidade()],
         'conta'    => ['Conta',    'conta',    'conta/'],
     ];
-    $qtd = sacola_quantidade();
     ?>
 </main>
 <?php if ($aba !== null): ?>
   <nav class="tab-bar vidro-regular" aria-label="Navegação principal">
     <ul class="tab-bar__lista" role="list">
-      <?php foreach ($abas as $chave => [$rotulo, $ic, $link]): ?>
+      <?php foreach ($abas as $chave => $item): ?>
+        <?php [$rotulo, $ic, $link] = $item; $qtd = $item[3] ?? null; ?>
         <li>
           <a class="tab-bar__item" href="<?= e(url($link)) ?>"<?= $chave === $aba ? ' aria-current="page"' : '' ?>>
             <?= icone($ic) ?>
             <span><?= e($rotulo) ?></span>
-            <?php if ($chave === 'sacola'): ?>
-              <span class="tab-bar__contador" data-contador-sacola<?= $qtd ? '' : ' hidden' ?>><?= $qtd ?></span>
+            <?php if ($qtd !== null): ?>
+              <span class="tab-bar__contador"<?= $chave === 'sacola' ? ' data-contador-sacola' : '' ?><?= $qtd ? '' : ' hidden' ?>><?= $qtd ?></span>
             <?php endif; ?>
           </a>
         </li>

@@ -243,7 +243,7 @@ input:checked + .chip {
 .nav-inline__direita  { justify-self: end;   display: flex; gap: var(--spacing-xs); }
 
 /* =================================================================
-   Barra de abas (Tab Bar): flutuante, em vidro, 5 abas
+   Barra de abas (Tab Bar): flutuante, em vidro, 5 abas (4 no painel da loja)
    ================================================================= */
 
 .tab-bar {
@@ -259,7 +259,8 @@ input:checked + .chip {
 }
 .tab-bar__lista {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   height: var(--altura-tab-bar);
   margin: 0;
   padding: var(--spacing-xs);
@@ -363,6 +364,15 @@ input:checked + .chip {
   transition: border-color var(--duracao-curta), box-shadow var(--duracao-curta);
   appearance: none;
 }
+select.campo__entrada {
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C6375' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+  cursor: pointer;
+}
+select.campo__entrada:disabled { cursor: default; background-image: none; }
 textarea.campo__entrada { height: auto; min-height: 104px; padding-block: var(--spacing-md); resize: vertical; }
 .campo__entrada::placeholder { color: var(--color-text-tertiary); }
 .campo__entrada:focus {
