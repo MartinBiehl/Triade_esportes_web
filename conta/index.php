@@ -19,8 +19,8 @@ if ($cliente) {
 
 pagina_inicio(['titulo' => 'Conta', 'aba' => 'conta']);
 ?>
-<?= nav_large('Conta') ?>
 <div class="conteudo pilha-xl">
+  <?= nav_large('Conta') ?>
 
   <?php if ($cliente): ?>
     <section class="perfil">

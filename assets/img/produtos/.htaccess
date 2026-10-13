@@ -1,0 +1,5 @@
+# Pasta das fotos enviadas pelo painel: aqui só ficam imagens.
+# Mesmo que alguém consiga colocar um script aqui, o servidor não deixa rodar.
+<FilesMatch "\.(php\d?|phtml|phar|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>

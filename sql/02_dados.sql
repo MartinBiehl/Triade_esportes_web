@@ -3,7 +3,7 @@
 --
 -- Contas de teste (senha das duas: triade123)
 --   cliente: ana@exemplo.com
---   painel:  admin@triade.com.br  (o painel fica para uma etapa posterior)
+--   painel:  admin@triade.com.br  (abra /admin)
 
 SET NAMES utf8mb4;
 
@@ -187,7 +187,7 @@ INSERT INTO pedido_historico (pedido_id, status, descricao, criado_em) VALUES
   (2, 'entregue',             'Retirado no depósito',                  '2026-09-04 15:20:00');
 
 -- ---------------------------------------------------------------
--- Administrador de teste (para o painel, que vem depois)
+-- Administrador de teste do painel da loja (/admin)
 -- ---------------------------------------------------------------
 
 INSERT INTO administradores (nome, email, senha_hash) VALUES

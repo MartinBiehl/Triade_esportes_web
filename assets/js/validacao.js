@@ -72,6 +72,7 @@
     validade: [validadeOk, 'Data inválida ou cartão vencido.'],
     cvv: [(v) => so(v).length >= 3 && so(v).length <= 4, '3 ou 4 números no verso.'],
     senha: [(v) => v.length >= 8, 'Use pelo menos 8 caracteres.'],
+    preco: [(v) => /^(\d{1,3}(\.\d{3})+|\d{1,7})([.,]\d{1,2})?$/.test(v.replace(/R\$|\s/g, '')), 'Valor inválido. Ex.: 199,90'],
   };
 
   function erroDoCampo(campo) {
