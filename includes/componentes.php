@@ -160,3 +160,28 @@ function painel_fim(string $rodape = ''): string
          . ($rodape ? '<div class="painel__rodape">' . $rodape . '</div>' : '')
          . '</div></div>';
 }
+
+/**
+ * Campo de texto (Text Field) com rótulo, ajuda e erro.
+ * $attrs: atributos extras do <input>, ex.: ['type' => 'email', 'autocomplete' => 'email', 'data-validar' => 'email']
+ */
+function campo_texto(string $nome, string $rotulo, ?string $valor = '', ?string $erro = null, array $attrs = [], ?string $ajuda = null): string
+{
+    $id = 'campo-' . preg_replace('/[^a-z0-9_-]/i', '-', $nome);
+    $attrs += ['type' => 'text'];
+    $extras = '';
+    foreach ($attrs as $chave => $v) {
+        if ($v === true) {
+            $extras .= ' ' . e($chave);
+        } elseif ($v !== false && $v !== null) {
+            $extras .= ' ' . e($chave) . '="' . e((string) $v) . '"';
+        }
+    }
+    $texto_ajuda = $erro ?? $ajuda;
+    return '<div class="campo' . ($erro ? ' campo--erro' : '') . '">'
+         . '<label class="campo__rotulo" for="' . e($id) . '">' . e($rotulo) . '</label>'
+         . '<input class="campo__entrada" id="' . e($id) . '" name="' . e($nome) . '" value="' . e($valor ?? '') . '"'
+         . ' aria-describedby="' . e($id) . '-ajuda"' . ($erro ? ' aria-invalid="true"' : '') . $extras . '>'
+         . '<span class="campo__ajuda" id="' . e($id) . '-ajuda" data-ajuda-original="' . e($ajuda ?? '') . '">' . e($texto_ajuda ?? '') . '</span>'
+         . '</div>';
+}

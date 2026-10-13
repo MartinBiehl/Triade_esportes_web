@@ -10,6 +10,8 @@ require __DIR__ . '/funcoes.php';
 require __DIR__ . '/componentes.php';
 require __DIR__ . '/catalogo.php';
 require __DIR__ . '/sacola.php';
+require __DIR__ . '/frete.php';
+require __DIR__ . '/checkout.php';
 require __DIR__ . '/layout.php';
 
 date_default_timezone_set('America/Sao_Paulo');
