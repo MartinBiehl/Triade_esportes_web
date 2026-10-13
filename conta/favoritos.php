@@ -23,6 +23,7 @@ pagina_inicio([
 
   <?php if ($produtos): ?>
     <p class="t-footnote texto-secundario" id="favoritos-contagem"><?= count($produtos) ?> <?= count($produtos) === 1 ? 'produto salvo' : 'produtos salvos' ?></p>
+    <h2 class="visualmente-oculto">Produtos salvos</h2>
     <div class="grade-produtos">
       <?php foreach ($produtos as $p): ?>
         <div class="card-favorito" data-card-favorito>

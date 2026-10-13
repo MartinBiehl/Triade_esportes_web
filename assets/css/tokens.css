@@ -46,7 +46,9 @@
 
   --color-text-primary: var(--ink-950);
   --color-text-secondary: var(--gray-600);
-  --color-text-tertiary: var(--gray-500);
+  --color-text-tertiary: #676E7F; /* gray/500 escurecido: o original não chega ao contraste mínimo de 4,5:1 para texto */
+  --color-text-success: #107A44;
+  --color-text-error: #CC2235;    /* vermelho para texto e selo Promo (o red/500 não chega a 4,5:1) */  /* verde para texto (o green/500 é claro demais sobre fundo branco) */
   --color-text-on-brand: var(--white);
   --color-text-on-accent: var(--ink-950);
   --color-text-link: var(--blue-600);
@@ -68,7 +70,7 @@
   --color-glass-fill: rgb(255 255 255 / 0.62);
   --color-glass-fill-thick: rgb(255 255 255 / 0.82);
   --color-glass-fill-dark: rgb(20 23 29 / 0.55);
-  --color-glass-fill-tint: rgb(0 82 255 / 0.80);
+  --color-glass-fill-tint: rgb(0 82 255 / 0.90); /* 90% (era 80%) para o texto branco ter contraste 4,5:1 */
   --color-glass-stroke: rgb(255 255 255 / 0.70);
   --color-glass-highlight: rgb(255 255 255 / 0.95);
 

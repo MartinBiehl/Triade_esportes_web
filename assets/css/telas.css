@@ -105,7 +105,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 .produto__galeria .midia-produto__silhueta { width: 56%; }
 
 .produto__preco { display: flex; align-items: baseline; gap: var(--spacing-sm); margin-top: var(--spacing-xs); }
-.produto__pix { display: inline-flex; align-items: center; gap: 4px; color: #138a4e; font-weight: 600; }
+.produto__pix { display: inline-flex; align-items: center; gap: 4px; color: var(--color-text-success); font-weight: 600; }
 
 /* No computador: fotos à esquerda e informações à direita */
 @media (min-width: 900px) {
@@ -176,7 +176,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
   gap: var(--spacing-sm);
   padding-right: var(--spacing-2xl);
   border-radius: var(--radius-lg);
-  background: var(--color-status-error);
+  background: var(--color-text-error);
   color: var(--white);
   font-weight: 600;
   opacity: 0;
@@ -250,7 +250,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--radius-md);
   background: rgb(242 57 75 / 0.1);
-  color: var(--color-status-error);
+  color: var(--color-text-error);
 }
 .separador-texto {
   display: flex;
@@ -311,9 +311,9 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 }
 .status-pedido::before { content: ""; width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
 .status-pedido--marca   { background: var(--color-brand-subtle); color: var(--color-brand-primary); }
-.status-pedido--sucesso { background: rgb(31 184 106 / 0.12); color: #138a4e; }
+.status-pedido--sucesso { background: rgb(31 184 106 / 0.12); color: var(--color-text-success); }
 .status-pedido--alerta  { background: rgb(255 138 0 / 0.12); color: #b45f00; }
-.status-pedido--erro    { background: rgb(242 57 75 / 0.1); color: var(--color-status-error); }
+.status-pedido--erro    { background: rgb(242 57 75 / 0.1); color: var(--color-text-error); }
 
 /* Meus pedidos */
 .cartao-pedido {
@@ -419,7 +419,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 .card-favorito { position: relative; }
 .form-favorito { display: contents; }
 .selo--principal { background: var(--color-brand-subtle); color: var(--color-brand-primary); }
-.botao.texto-erro { color: var(--color-status-error); }
+.botao.texto-erro { color: var(--color-text-error); }
 
 /* =================================================================
    Etapa 6 · Institucional e estados (telas 27 a 29 e 31)

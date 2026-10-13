@@ -34,6 +34,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 [hidden] { display: none !important; } /* "hidden" sempre esconde, mesmo em elementos com display: flex */
 a { color: var(--color-text-link); text-decoration: none; }
+p a:not([class]) { text-decoration: underline; text-underline-offset: 2px; }
 
 :focus-visible {
   outline: 2px solid var(--color-brand-primary);
@@ -60,8 +61,8 @@ a { color: var(--color-text-link); text-decoration: none; }
 
 .texto-secundario { color: var(--color-text-secondary); }
 .texto-terciario  { color: var(--color-text-tertiary); }
-.texto-sucesso    { color: var(--color-status-success); }
-.texto-erro       { color: var(--color-status-error); }
+.texto-sucesso    { color: var(--color-text-success); }
+.texto-erro       { color: var(--color-text-error); }
 .riscado          { text-decoration: line-through; }
 
 /* ---------- Estrutura das páginas ---------- */
@@ -170,3 +171,18 @@ p > .icone, p > span > .icone { display: inline-block; vertical-align: -0.22em; 
     scroll-behavior: auto !important;
   }
 }
+
+/* Atalho para quem navega pelo teclado: aparece só ao receber foco (Tab) */
+.pular-conteudo {
+  position: fixed;
+  z-index: 100;
+  top: calc(var(--area-segura-topo) + 8px);
+  left: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.pular-conteudo:focus { transform: none; }

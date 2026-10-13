@@ -88,6 +88,7 @@ pagina_inicio([
       </button>
     </div>
 
+    <h2 class="visualmente-oculto">Produtos</h2>
     <div class="grade-produtos">
       <?php foreach ($produtos as $produto): ?>
         <?= card_produto($produto) ?>

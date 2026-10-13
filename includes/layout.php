@@ -71,6 +71,7 @@ function pagina_inicio(array $opcoes = []): void
 </head>
 <body>
 <script>document.documentElement.classList.add('js');</script>
+<a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 <?php if ($opcoes['nav']): ?>
   <?php $nav = $opcoes['nav'] + ['titulo' => '', 'voltar' => null, 'acoes' => '']; ?>
   <header class="nav-inline">
@@ -80,7 +81,11 @@ function pagina_inicio(array $opcoes = []): void
           <a class="botao-icone botao-icone--plain" href="<?= e($nav['voltar']) ?>" aria-label="Voltar"><?= icone('voltar') ?></a>
         <?php endif; ?>
       </div>
-      <h1 class="nav-inline__titulo"><?= e($nav['titulo']) ?></h1>
+      <?php if ($nav['titulo'] !== ''): ?>
+        <h1 class="nav-inline__titulo"><?= e($nav['titulo']) ?></h1>
+      <?php else: ?>
+        <span class="nav-inline__titulo"></span>
+      <?php endif; ?>
       <div class="nav-inline__direita"><?= $nav['acoes'] ?></div>
     </div>
   </header>
