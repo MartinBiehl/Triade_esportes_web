@@ -381,6 +381,53 @@ function registrar_historico(int $pedido_id, string $status, string $descricao):
     consulta('INSERT INTO pedido_historico (pedido_id, status, descricao) VALUES (?, ?, ?)', [$pedido_id, $status, $descricao]);
 }
 
+/** As peças de um pedido cancelado voltam para o estoque (o estoque sai quando o pedido é feito). */
+function devolver_estoque(int $pedido_id): void
+{
+    $itens = consulta('SELECT produto_id, tamanho, quantidade FROM pedido_itens WHERE pedido_id = ? AND produto_id IS NOT NULL', [$pedido_id])->fetchAll();
+    foreach ($itens as $item) {
+        consulta(
+            'UPDATE produto_tamanhos SET estoque = estoque + ? WHERE produto_id = ? AND tamanho = ?',
+            [$item['quantidade'], $item['produto_id'], $item['tamanho']]
+        );
+    }
+}
+
+/**
+ * Pix não pago no prazo: o pedido é cancelado e as peças voltam para a loja.
+ * Roda no começo de cada página (é uma consulta rápida), já que o site não tem tarefas agendadas.
+ */
+function cancelar_pix_vencidos(): void
+{
+    static $feito = false;
+    if ($feito) {
+        return;
+    }
+    $feito = true;
+    $limite = (new DateTimeImmutable())->modify('-' . PIX_VALIDADE_MINUTOS . ' minutes')->format('Y-m-d H:i:s');
+    $vencidos = consulta(
+        "SELECT id FROM pedidos WHERE pagamento_tipo = 'pix' AND status = 'aguardando_pagamento' AND criado_em < ?",
+        [$limite]
+    )->fetchAll(PDO::FETCH_COLUMN);
+
+    foreach ($vencidos as $id) {
+        $pdo = db();
+        $pdo->beginTransaction();
+        try {
+            // "AND status" garante que só um acesso cancela (e devolve o estoque) uma vez
+            $mudou = consulta("UPDATE pedidos SET status = 'cancelado' WHERE id = ? AND status = 'aguardando_pagamento'", [$id])->rowCount();
+            if ($mudou) {
+                devolver_estoque((int) $id);
+                registrar_historico((int) $id, 'cancelado', 'O código Pix venceu sem pagamento');
+            }
+            $pdo->commit();
+        } catch (Throwable $erro) {
+            $pdo->rollBack();
+            throw $erro;
+        }
+    }
+}
+
 /**
  * Pedido pelo número, só se foi feito nesta sessão ou é do cliente logado.
  * Assim ninguém vê o pedido de outra pessoa trocando o número na URL.

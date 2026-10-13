@@ -35,6 +35,14 @@ $texto_pagamento = match ($pedido['pagamento_tipo']) {
 
 $mensagem_whatsapp = 'Olá! Tenho uma dúvida sobre o pedido #' . $pedido['numero'];
 
+// prazo de troca: conta a partir do dia da entrega (ou da retirada)
+$prazo_troca = null;
+$entregue_em = end($linha)['quando'] ?? null;
+if ($pedido['status'] === 'entregue' && $entregue_em) {
+    $limite = (new DateTimeImmutable($entregue_em))->modify('+' . TROCA_PRAZO_DIAS . ' days')->setTime(23, 59, 59);
+    $prazo_troca = $limite >= new DateTimeImmutable() ? $limite : false;
+}
+
 pagina_inicio([
     'titulo' => 'Pedido #' . $pedido['numero'],
     'aba'    => 'conta',
@@ -160,8 +168,10 @@ pagina_inicio([
   <section class="pilha-sm">
     <h2 class="t-headline">Precisa de ajuda?</h2>
     <ul class="lista" role="list">
-      <?php if ($pedido['status'] === 'entregue'): ?>
-        <li><?= linha_lista('Trocar ou devolver', 'trocas', url('trocas.php'), 'até ' . TROCA_PRAZO_DIAS . ' dias') ?></li>
+      <?php if ($prazo_troca): ?>
+        <li><?= linha_lista('Trocar ou devolver', 'trocas', url('trocas.php'), 'até ' . $prazo_troca->format('d/m')) ?></li>
+      <?php elseif ($prazo_troca === false): ?>
+        <li><?= linha_lista('Prazo de troca encerrado', 'trocas', url('trocas.php')) ?></li>
       <?php endif; ?>
       <li><?= linha_lista('Falar sobre este pedido', 'whatsapp', 'https://wa.me/' . CONTATO_WHATSAPP . '?text=' . rawurlencode($mensagem_whatsapp)) ?></li>
     </ul>

@@ -50,3 +50,6 @@ set_exception_handler(function (Throwable $erro) use ($config) {
        . ($detalhe ? '<pre style="white-space: pre-wrap; background: #F1F2F5; padding: 12px; border-radius: 8px">' . e($detalhe) . '</pre>' : '')
        . '</body></html>';
 });
+
+// Pix vencido vira pedido cancelado e devolve o estoque (não há tarefa agendada no XAMPP nem na InfinityFree).
+cancelar_pix_vencidos();

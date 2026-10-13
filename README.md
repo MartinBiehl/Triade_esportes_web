@@ -4,7 +4,8 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 7 (painel da loja)**. Já funcionam o painel da loja (pedidos, produtos, estoque e catálogo), o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular, além do frete por região do CEP.
+- Situação: **pronto para entrega** (etapas 0 a 9 do plano). A loja, a compra completa, a conta do cliente e o painel da loja funcionam. Pix, cartão, boleto e frete são simulados.
+- Para testar tudo em ordem, siga o [roteiro de teste](#roteiro-de-teste).
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -96,11 +97,76 @@ O frete também é simulado: o preço e o prazo mudam conforme a região do CEP 
 3. Abra o **phpMyAdmin** pelo painel, selecione o banco e importe **só** `sql/01_estrutura.sql` e depois `sql/02_dados.sql` (o `00` não funciona lá, o banco já foi criado no passo 2).
 4. No seu computador, copie `includes/config.local.exemplo.php` para `includes/config.local.php` e preencha com os dados do passo 2.
 5. Pelo **File Manager** do painel (ou por FTP com o FileZilla), envie todos os arquivos do projeto para a pasta `htdocs` da hospedagem, **incluindo** o `config.local.php`.
-6. Acesse o seu endereço. Deve aparecer "Banco de dados conectado".
+6. Acesse o seu endereço. Deve abrir a tela Início da loja.
+7. Confira a proteção: abra `seu-endereco/includes/config.php`. Tem que dar **403 (proibido)**. Se mostrar a página em branco ou baixar o arquivo, avise antes de divulgar o link.
+8. Entre em `seu-endereco/admin` e troque a senha do painel em **Trocar senha do painel**.
+
+Cuidados na InfinityFree:
+- O site precisa de **PHP 8.2 ou mais novo**. A InfinityFree já usa PHP 8. Se o painel dela oferecer escolha de versão, não escolha uma 7.x.
+- Ative o **SSL** grátis (em **SSL Certificates**) e use o endereço com `https://`. Sem ele o site não pode ser instalado no celular.
+- A InfinityFree mostra uma tela de verificação ("checking your browser") no primeiro acesso. É dela, não do site.
+- Fotos enviadas pelo painel no XAMPP **não vão sozinhas**: envie também a pasta `assets/img/produtos`. As fotos ficam fora do GitHub.
+- O `modo_debug` do `config.local.php` fica `false` lá, para não mostrar detalhes de erro para visitantes.
 
 > O `config.local.php` tem a senha do banco e por isso **não vai para o GitHub** (está no `.gitignore`). Ele só existe no seu computador e na hospedagem.
 
 ---
+
+## Roteiro de teste
+
+Comece com o banco zerado (importe de novo o `01` e o `02`). Use o Chrome no modo celular (**F12** e **Ctrl+Shift+M**).
+
+**1. Compra sem conta, no cartão**
+1. No Início, abra um produto, escolha o tamanho e toque em **Adicionar à sacola**.
+2. Na página do produto, digite um CEP em **Calcular frete** (ex.: `96010-000`, Pelotas). Aparecem preço e prazo da região Sul.
+3. Na Sacola, mude a quantidade e deslize um item para o lado para remover (o aviso tem **Desfazer**).
+4. Toque em **Continuar** e preencha os dados. Use um CPF válido, como `529.982.247-25`.
+5. No pagamento, escolha cartão `4111 1111 1111 1111` com validade futura. O pedido fica **Pagamento aprovado**.
+6. Repita com um cartão terminado em `0002`: aparece **Pagamento recusado** e nada é gravado.
+
+**2. Compra no Pix e no boleto**
+1. Faça uma compra no Pix e toque em **Simular pagamento aprovado**.
+2. Faça outra no Pix e não pague: depois de 30 minutos ela é cancelada sozinha e o estoque volta.
+3. Faça uma no boleto: o pedido fica **Aguardando pagamento** até a loja confirmar no painel.
+
+**3. Conta do cliente**
+1. Em Conta, entre com `ana@exemplo.com` / `triade123`.
+2. Abra **Meus pedidos**: o TR-20481 está a caminho, com código de rastreio e linha do tempo.
+3. Teste endereços (adicionar, tornar principal, excluir), favoritos (coração nos produtos) e **Esqueci minha senha** (o link aparece na própria tela).
+
+**4. Painel da loja**
+1. Abra `/admin` e entre com `admin@triade.com.br` / `triade123`.
+2. Em **Pedidos > Para separar**, abra o pedido do cartão do passo 1. Toque em **Começar a separar**, depois **Marcar como enviado** com um código como `QB123456789BR` e, por fim, **Marcar como entregue**.
+3. Volte à tela do pedido do cliente: o rastreio andou e o código aparece.
+4. Cancele o pedido do boleto. As peças voltam ao estoque.
+5. Em **Produtos > Novo**, cadastre um produto com tamanhos, estoque e uma foto. Ele aparece na loja na hora. Desligue **Aparece na loja** e ele some.
+6. Em **Catálogo**, crie um esporte e uma categoria. O esporte só aparece na loja quando tiver produtos.
+
+**5. Extras**
+- Trocas e devoluções, Sobre e contato.
+- Desligue a internet (F12 > Network > Offline) e navegue: aparece a tela **Sem internet**.
+- No celular de verdade, use **Adicionar à tela inicial**. Só funciona em `localhost` ou `https`.
+
+## O que é simulado ou ficou de fora
+
+- **Pagamentos:** nenhum dinheiro é cobrado. O Pix tem QR Code e código de exemplo, o cartão é conferido só pelo formato e o boleto não gera documento.
+- **Frete:** sem ligação com os Correios. Os preços e prazos são de uma tabela fixa por região.
+- **E-mails:** o site não manda e-mail. A recuperação de senha mostra o link na tela.
+- **Estorno:** cancelar um pedido pago devolve o estoque, mas não o dinheiro. O painel só lembra que o estorno precisa ser feito.
+- **Conteúdo:** fotos, logo e contatos são provisórios, porque a Triade ainda não enviou os reais. Os produtos e preços também são de exemplo.
+- **Fora do escopo do design:** cupons, avaliações, programa de fidelidade, personalização de camisa e modo escuro.
+- **Painel:** tem um único login de loja. Não há cadastro de vários funcionários com permissões diferentes.
+
+## Problemas comuns
+
+| Sintoma | O que fazer |
+|---|---|
+| O Apache não fica verde no XAMPP | Outro programa está usando a porta 80 (Skype, IIS). Feche-o, ou mude a porta do Apache em **Config > httpd.conf** e acesse `localhost:8080`. |
+| O MySQL não fica verde | Outro MySQL já está instalado na porta 3306. Pare o outro serviço no Windows. |
+| "Banco de dados não conectado" | Confira se o MySQL está ligado e se os scripts `00`, `01` e `02` foram importados, nessa ordem. |
+| Erro no phpMyAdmin ao importar o `01` | Clique no banco `triade` na esquerda **antes** de importar. |
+| O site mostra uma versão velha depois de atualizar o código | Aperte **Ctrl+Shift+R**. Se continuar, em F12 > Application > Service Workers, clique em **Unregister**. |
+| A foto não sobe no painel | Ela precisa ser JPG, PNG ou WebP e ter até 3 MB. |
 
 ## Organização das pastas
 
@@ -197,15 +263,20 @@ Se uma página demorar para carregar, aparece o **esqueleto** (31) no lugar do c
 
 ## Regras de negócio
 
-Ficam todas em `includes/config.php`. Foram definidas no design e **ainda não foram confirmadas pela Triade**:
+Os valores ficam em `includes/config.php`. Foram definidos no design e **ainda não foram confirmados pela Triade**: se a empresa mudar algum, troque só lá.
 
-| Regra | Valor |
+| Regra | Como funciona |
 |---|---|
-| Desconto no Pix | 5% |
-| Cartão | até 6x sem juros, parcela mínima de R$ 30 |
-| Frete grátis | PAC grátis acima de R$ 399 |
-| Retirada | grátis no depósito em São Leopoldo |
-| Trocas | 30 dias |
+| Desconto no Pix | 5% sobre os produtos. O frete não tem desconto. |
+| Cartão | Até 6x sem juros, com parcela mínima de R$ 30 (ex.: R$ 89,90 vai até 2x). |
+| Frete grátis | PAC grátis quando os produtos somam **R$ 399 ou mais** (antes do desconto do Pix), em todo o RS. SEDEX e transportadora continuam pagos. |
+| Entrega | Só no Rio Grande do Sul (CEP começando com 9). Preço e prazo por região, tabela abaixo. |
+| Retirada | Grátis no depósito em São Leopoldo, pronta em 1 dia útil. |
+| Estoque | Sai quando o pedido é feito e volta se o pedido for cancelado. O cliente não consegue pôr na sacola mais do que tem. |
+| Pix | O código vale 30 minutos. Depois disso o pedido é cancelado sozinho e as peças voltam para a loja. |
+| Boleto | O pedido fica aguardando até a loja confirmar o pagamento no painel (prazo informado: até 2 dias úteis). |
+| Trocas | 30 dias a partir da entrega (ou da retirada). A tela do pedido mostra até que dia vale. |
+| Compra sem conta | Pode. Quem cria a conta logo depois da compra fica com o pedido na conta. |
 
 ## Frete por região (simulado)
 
