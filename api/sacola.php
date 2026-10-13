@@ -2,6 +2,9 @@
 /**
  * Ações da sacola. Recebe POST do formulário (sem JavaScript) ou do fetch (com JavaScript).
  *   acao=adicionar  produto_id, tamanho, quantidade
+ *   acao=atualizar  chave, quantidade (0 remove)
+ *   acao=remover    chave
+ *   acao=restaurar  produto_id, tamanho, quantidade (o "Desfazer" depois de remover)
  */
 require __DIR__ . '/../includes/bootstrap.php';
 
@@ -34,6 +37,35 @@ if ($acao === 'adicionar') {
         aviso_definir($erro, 'erro');
     }
     redirecionar($voltar);
+}
+
+if (in_array($acao, ['atualizar', 'remover', 'restaurar'], true)) {
+    $chave = (string) ($_POST['chave'] ?? '');
+    $erro = null;
+    $removido = null;
+
+    if ($acao === 'atualizar') {
+        $erro = sacola_atualizar($chave, $quantidade);
+    } elseif ($acao === 'remover') {
+        $removido = sacola_remover($chave);
+    } else {
+        $erro = sacola_adicionar($produto_id, $tamanho, $quantidade);
+    }
+
+    if (pedido_ajax()) {
+        responder_json([
+            'ok'         => $erro === null,
+            'mensagem'   => $erro,
+            'removido'   => $removido,
+            'quantidade' => sacola_quantidade(),
+        ]);
+    }
+    if ($erro !== null) {
+        aviso_definir($erro, 'erro');
+    } elseif ($removido) {
+        aviso_definir('Item removido da sacola');
+    }
+    redirecionar('sacola.php');
 }
 
 http_response_code(400);

@@ -141,3 +141,50 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 
 /* contador da sacola no cabeçalho do produto */
 .nav-inline .tab-bar__contador { top: 2px; left: auto; right: 0; }
+
+/* =================================================================
+   10 · Sacola
+   ================================================================= */
+
+.frete-progresso { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.frete-progresso__barra {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-tertiary);
+}
+.frete-progresso__barra span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-brand-primary), var(--color-accent-primary));
+  transition: width var(--duracao-media) var(--ease-padrao);
+}
+
+/* Deslizar para remover: o item desliza e mostra o "Remover" vermelho por trás */
+.item-sacola-trilho {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.item-sacola__fundo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  padding-right: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
+  background: var(--color-status-error);
+  color: var(--white);
+  font-weight: 600;
+  opacity: 0;
+}
+.item-sacola-trilho .item-sacola { touch-action: pan-y; will-change: transform; }
+.item-sacola-trilho[data-arrastando] .item-sacola { user-select: none; }
+
+/* sem JavaScript não dá para deslizar: esconde a dica */
+.dica-deslizar { display: none; }
+.js .dica-deslizar { display: block; }
+@media (hover: hover) and (pointer: fine) { .js .dica-deslizar { display: none; } }

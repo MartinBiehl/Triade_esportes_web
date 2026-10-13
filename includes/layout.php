@@ -65,6 +65,7 @@ function pagina_inicio(array $opcoes = []): void
   <meta name="csrf" content="<?= e(csrf_token()) ?>">
 </head>
 <body>
+<script>document.documentElement.classList.add('js');</script>
 <?php if ($opcoes['nav']): ?>
   <?php $nav = $opcoes['nav'] + ['titulo' => '', 'voltar' => null, 'acoes' => '']; ?>
   <header class="nav-inline">

@@ -139,6 +139,8 @@ a { color: var(--color-text-link); text-decoration: none; }
 .icone--sm { width: 20px; height: 20px; }
 .icone--xs { width: 16px; height: 16px; }
 .icone--preenchido { fill: currentColor; }
+/* ícone no meio de um texto */
+p > .icone, p > span > .icone { display: inline-block; vertical-align: -0.22em; }
 
 /* ---------- Troca de página ---------- */
 /* Navegadores que suportam (Chrome/Android) animam a troca entre páginas.
