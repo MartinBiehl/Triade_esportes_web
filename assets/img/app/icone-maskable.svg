@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Versão "maskable": fundo até a borda e desenho dentro da área segura (Android recorta em círculo) -->
+  <rect width="512" height="512" fill="#0052FF"/>
+  <g transform="translate(256 256) scale(0.72) translate(-256 -256)">
+    <path d="M128 136h256v64H292v196h-72V200h-92z" fill="#fff"/>
+    <path d="M332 396l52-90 52 90z" fill="#C8F31D"/>
+  </g>
+</svg>

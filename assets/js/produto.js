@@ -80,4 +80,41 @@
       } catch (e) { /* o cliente cancelou */ }
     });
   });
+
+  // Calcular frete pelo CEP sem recarregar a página
+  const formFrete = document.querySelector('form[data-frete]');
+  if (formFrete) {
+    const campo = formFrete.querySelector('input[name="cep"]');
+    const resultado = document.getElementById('frete-resultado');
+    const caixa = campo.closest('.campo');
+    const ajuda = caixa.querySelector('.campo__ajuda');
+    const mostrarErro = (texto) => {
+      caixa.classList.toggle('campo--erro', !!texto);
+      ajuda.textContent = texto || '';
+      if (texto) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid');
+    };
+
+    campo.addEventListener('input', () => {
+      const n = campo.value.replace(/\D+/g, '').slice(0, 8);
+      campo.value = n.length > 5 ? n.slice(0, 5) + '-' + n.slice(5) : n;
+      if (n.length === 8) formFrete.requestSubmit(); // calcula sozinho ao completar o CEP
+    });
+
+    formFrete.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const cep = campo.value.replace(/\D+/g, '');
+      if (cep.length !== 8) { mostrarErro('Digite o CEP com 8 números.'); return; }
+      resultado.setAttribute('aria-busy', 'true');
+      try {
+        const url = `${formFrete.dataset.frete}?cep=${cep}&valor=${formFrete.dataset.valor}`;
+        const resposta = await (await fetch(url, { headers: { 'X-Requested-With': 'fetch' } })).json();
+        mostrarErro(resposta.ok ? null : resposta.mensagem);
+        resultado.innerHTML = resposta.ok ? resposta.html : '';
+      } catch (e) {
+        formFrete.submit();
+      } finally {
+        resultado.removeAttribute('aria-busy');
+      }
+    });
+  }
 })();

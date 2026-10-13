@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 5 (conta)**. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados) e a conta do cliente (entrar, criar conta, recuperar senha, pedidos com rastreio, endereços e favoritos).
+- Situação: **etapa 8 (frete pelo CEP)**. A etapa 7 (painel da loja) ficou para depois. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular.
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -68,7 +68,7 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 Entre com `ana@exemplo.com` / `triade123`. Ela já tem 2 pedidos (um a caminho, com código de rastreio), 1 endereço e favoritos.
 O "Esqueci minha senha" não manda e-mail de verdade: o link para criar a senha nova aparece na própria tela, marcado como simulação.
 
-O frete ainda tem valores fixos (PAC, SEDEX, Transportadora e Retirada). O cálculo por região do CEP fica para a etapa 8. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
+O frete também é simulado: o preço e o prazo mudam conforme a região do CEP dentro do RS (tabela abaixo). Dá para calcular na página do produto. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
 
 ---
 
@@ -95,6 +95,11 @@ Triade_esportes_web/
 ├── resultados.php       04 · Resultados, 05 · Filtros e 06 · Sem resultado
 ├── produto.php          07 · Produto, 08 · Guia de tamanhos e 09 · Adicionado
 ├── sacola.php           10 · Sacola e 11 · Sacola vazia
+├── trocas.php           27 · Trocas e devoluções
+├── sobre.php            28 · Sobre e contato
+├── offline.html         29 · Sem internet (página guardada pelo sw.js)
+├── sw.js                ajudante do navegador: tela Sem internet e arquivos guardados
+├── manifest.json        nome, cores e ícones para instalar o site no celular
 ├── api/sacola.php       adiciona, altera e remove itens da sacola
 ├── api/favoritos.php    liga e desliga o coração de favorito
 ├── conta/               conta do cliente
@@ -136,13 +141,21 @@ Triade_esportes_web/
 │   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css, telas.css
 │   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js, conta.js
 │   ├── fonts/           fonte Inter (licença livre OFL)
-│   └── img/             icones.svg (ícones e silhuetas dos produtos)
+│   └── img/             icones.svg (ícones e silhuetas dos produtos) e app/ (ícone provisório do site)
 ├── sql/                 scripts do banco de dados
 │   ├── 00_criar_banco.sql
 │   ├── 01_estrutura.sql
 │   └── 02_dados.sql
 └── README.md
 ```
+
+## Site instalável (PWA)
+
+No celular, o navegador oferece **"Adicionar à tela inicial"**. O site abre como um app, sem a barra do navegador, com o ícone provisório da Triade.
+Se a internet cair, aparece a tela **Sem internet** (29), que volta sozinha quando a conexão retorna.
+Se uma página demorar para carregar, aparece o **esqueleto** (31) no lugar do conteúdo.
+
+> Isso só funciona em `http://localhost` (XAMPP) ou em endereço com `https://` (a InfinityFree oferece de graça em **SSL Certificates**). Para forçar o navegador a pegar uma versão nova do `sw.js`, troque o número em `VERSAO` dentro dele.
 
 ## Visual e animações
 
@@ -163,6 +176,19 @@ Ficam todas em `includes/config.php`. Foram definidas no design e **ainda não f
 | Frete grátis | PAC grátis acima de R$ 399 |
 | Retirada | grátis no depósito em São Leopoldo |
 | Trocas | 30 dias |
+
+## Frete por região (simulado)
+
+Não há ligação com os Correios. O RS foi dividido pelas faixas de CEP; quanto mais longe de São Leopoldo, mais caro e demorado. Os valores ficam em `includes/frete.php`.
+
+| Região | CEPs | PAC | SEDEX | Transportadora |
+|---|---|---|---|---|
+| Grande Porto Alegre | 90000 a 94999 | R$ 14,90 · 2 a 4 dias | R$ 24,90 · 1 a 2 dias | R$ 19,90 · 2 a 3 dias |
+| Serra, Litoral Norte e Vales | 95000 a 95999 | R$ 22,90 · 4 a 6 dias | R$ 34,90 · 2 a 3 dias | R$ 27,90 · 3 a 5 dias |
+| Sul e Centro do estado | 96000 a 97999 | R$ 27,90 · 5 a 8 dias | R$ 42,90 · 2 a 4 dias | R$ 32,90 · 4 a 7 dias |
+| Norte, Missões e Fronteira | 98000 a 99999 | R$ 31,90 · 6 a 9 dias | R$ 49,90 · 3 a 5 dias | R$ 36,90 · 5 a 8 dias |
+
+Prazos em dias úteis. PAC grátis acima de R$ 399 em todo o RS. Retirada em São Leopoldo: grátis, pronta em 1 dia útil.
 
 ## Banco de dados
 

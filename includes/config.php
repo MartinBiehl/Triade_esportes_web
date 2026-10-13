@@ -45,3 +45,4 @@ const CONTATO_WHATSAPP  = '5551999999999';
 const CONTATO_EMAIL     = 'contato@triadeesporte.com.br';
 const CONTATO_INSTAGRAM = 'triadeesporte';
 const DEPOSITO_ENDERECO = 'Rua Exemplo, 123, Centro, São Leopoldo/RS';
+const CONTATO_HORARIO   = 'Segunda a sexta, 9h às 18h · Sábado, 9h às 13h';

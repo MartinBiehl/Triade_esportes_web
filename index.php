@@ -17,6 +17,7 @@ pagina_inicio(['aba' => 'inicio']);
 <div class="conteudo pilha-xl">
 
   <header class="inicio-topo">
+    <h1 class="visualmente-oculto"><?= e(LOJA_NOME) ?>: loja de materiais esportivos</h1>
     <a class="marca" href="<?= e(url('index.php')) ?>" aria-label="<?= e(LOJA_NOME) ?>, início">
       TRIADE<span>ESPORTE</span>
     </a>
@@ -87,7 +88,7 @@ pagina_inicio(['aba' => 'inicio']);
   <?php endif; ?>
 
   <!-- Vantagens -->
-  <section class="rolagem-horizontal vantagens" aria-label="Vantagens">
+  <section class="rolagem-horizontal vantagens" aria-label="Vantagens" tabindex="0">
     <div class="vantagem">
       <?= icone('caminhao') ?>
       <div><strong>Frete grátis</strong><span>PAC acima de <?= dinheiro(FRETE_GRATIS_ACIMA) ?></span></div>

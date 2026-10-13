@@ -105,7 +105,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 .produto__galeria .midia-produto__silhueta { width: 56%; }
 
 .produto__preco { display: flex; align-items: baseline; gap: var(--spacing-sm); margin-top: var(--spacing-xs); }
-.produto__pix { display: inline-flex; align-items: center; gap: 4px; color: #138a4e; font-weight: 600; }
+.produto__pix { display: inline-flex; align-items: center; gap: 4px; color: var(--color-text-success); font-weight: 600; }
 
 /* No computador: fotos à esquerda e informações à direita */
 @media (min-width: 900px) {
@@ -176,7 +176,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
   gap: var(--spacing-sm);
   padding-right: var(--spacing-2xl);
   border-radius: var(--radius-lg);
-  background: var(--color-status-error);
+  background: var(--color-text-error);
   color: var(--white);
   font-weight: 600;
   opacity: 0;
@@ -250,7 +250,7 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--radius-md);
   background: rgb(242 57 75 / 0.1);
-  color: var(--color-status-error);
+  color: var(--color-text-error);
 }
 .separador-texto {
   display: flex;
@@ -311,9 +311,9 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 }
 .status-pedido::before { content: ""; width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
 .status-pedido--marca   { background: var(--color-brand-subtle); color: var(--color-brand-primary); }
-.status-pedido--sucesso { background: rgb(31 184 106 / 0.12); color: #138a4e; }
+.status-pedido--sucesso { background: rgb(31 184 106 / 0.12); color: var(--color-text-success); }
 .status-pedido--alerta  { background: rgb(255 138 0 / 0.12); color: #b45f00; }
-.status-pedido--erro    { background: rgb(242 57 75 / 0.1); color: var(--color-status-error); }
+.status-pedido--erro    { background: rgb(242 57 75 / 0.1); color: var(--color-text-error); }
 
 /* Meus pedidos */
 .cartao-pedido {
@@ -419,4 +419,85 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
 .card-favorito { position: relative; }
 .form-favorito { display: contents; }
 .selo--principal { background: var(--color-brand-subtle); color: var(--color-brand-primary); }
-.botao.texto-erro { color: var(--color-status-error); }
+.botao.texto-erro { color: var(--color-text-error); }
+
+/* =================================================================
+   Etapa 6 · Institucional e estados (telas 27 a 29 e 31)
+   ================================================================= */
+
+.vantagens--grade { display: grid; grid-template-columns: 1fr 1fr; margin: 0; padding: 0; }
+.vantagens--grade .vantagem { flex-direction: column; align-items: flex-start; gap: var(--spacing-sm); min-width: 0; }
+.vantagens--grade .vantagem span { color: var(--color-text-primary); font-weight: 500; }
+
+/* Passos numerados (Como trocar) */
+.passos-numerados { display: flex; flex-direction: column; gap: var(--spacing-lg); margin: 0; padding: var(--spacing-lg); counter-reset: passo; border-radius: var(--radius-lg); background: var(--color-bg-secondary); box-shadow: var(--shadow-card); }
+.passos-numerados li { position: relative; display: flex; flex-direction: column; gap: 2px; padding-left: 40px; counter-increment: passo; }
+.passos-numerados li::before {
+  content: counter(passo);
+  position: absolute;
+  top: -2px;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-brand-subtle);
+  color: var(--color-brand-primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Sanfona (perguntas frequentes) */
+.sanfona { overflow: hidden; border-radius: var(--radius-lg); background: var(--color-bg-secondary); box-shadow: var(--shadow-card); }
+.sanfona details + details { border-top: 1px solid var(--color-border-default); }
+.sanfona summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  min-height: 52px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 16px;
+  font-weight: 500;
+  list-style: none;
+  cursor: pointer;
+}
+.sanfona summary::-webkit-details-marker { display: none; }
+.sanfona summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-right: 2px solid var(--color-text-tertiary);
+  border-bottom: 2px solid var(--color-text-tertiary);
+  transform: rotate(45deg);
+  transition: transform var(--duracao-curta) var(--ease-padrao);
+}
+.sanfona details[open] summary::after { transform: rotate(-135deg); }
+.sanfona details p { padding: 0 var(--spacing-lg) var(--spacing-lg); color: var(--color-text-secondary); font-size: 15px; line-height: 22px; }
+
+/* Carregando (tela 31): aparece por cima do conteúdo, embaixo do cabeçalho e da barra de abas */
+.carregando {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  padding-top: calc(var(--area-segura-topo) + 72px);
+  background: var(--color-bg-primary);
+  animation: carregando-entra 160ms ease-out both;
+}
+.carregando--produto { padding-top: 0; }
+@keyframes carregando-entra { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .carregando { animation: none; }
+  .esqueleto::after { animation: none; }
+}
+
+/* =================================================================
+   Etapa 8 · Frete pelo CEP
+   ================================================================= */
+.frete-cep__linha { display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-sm); align-items: start; }
+.frete-cep__linha .botao { height: 52px; margin-top: 24px; }
+#frete-resultado[aria-busy="true"] { opacity: 0.5; transition: opacity var(--duracao-curta); }

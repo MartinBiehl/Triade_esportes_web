@@ -48,7 +48,7 @@ function pagina_inicio(array $opcoes = []): void
     }
     ?>
 <!doctype html>
-<html lang="pt-BR" data-icones="<?= e(asset('img/icones.svg')) ?>">
+<html lang="pt-BR" data-icones="<?= e(asset('img/icones.svg')) ?>" data-sw="<?= e(url('sw.js')) ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -63,9 +63,15 @@ function pagina_inicio(array $opcoes = []): void
   <link rel="stylesheet" href="<?= e(asset('css/telas.css')) ?>">
   <?php endif; ?>
   <meta name="csrf" content="<?= e(csrf_token()) ?>">
+  <link rel="manifest" href="<?= e(url('manifest.json')) ?>">
+  <link rel="icon" href="<?= e(asset('img/app/icone.svg')) ?>" type="image/svg+xml">
+  <link rel="icon" href="<?= e(asset('img/app/favicon-32.png')) ?>" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="<?= e(asset('img/app/apple-touch-icon.png')) ?>">
+  <meta name="apple-mobile-web-app-title" content="Triade">
 </head>
 <body>
 <script>document.documentElement.classList.add('js');</script>
+<a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 <?php if ($opcoes['nav']): ?>
   <?php $nav = $opcoes['nav'] + ['titulo' => '', 'voltar' => null, 'acoes' => '']; ?>
   <header class="nav-inline">
@@ -75,7 +81,11 @@ function pagina_inicio(array $opcoes = []): void
           <a class="botao-icone botao-icone--plain" href="<?= e($nav['voltar']) ?>" aria-label="Voltar"><?= icone('voltar') ?></a>
         <?php endif; ?>
       </div>
-      <h1 class="nav-inline__titulo"><?= e($nav['titulo']) ?></h1>
+      <?php if ($nav['titulo'] !== ''): ?>
+        <h1 class="nav-inline__titulo"><?= e($nav['titulo']) ?></h1>
+      <?php else: ?>
+        <span class="nav-inline__titulo"></span>
+      <?php endif; ?>
       <div class="nav-inline__direita"><?= $nav['acoes'] ?></div>
     </div>
   </header>

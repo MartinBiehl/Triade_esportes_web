@@ -89,4 +89,67 @@
     }, { root: faixa, threshold: [0.6] });
     itens.forEach((item) => observador.observe(item));
   });
+
+  // ---------- Carregando (tela 31 · esqueleto) ----------
+  // Se a próxima página demorar (internet lenta, hospedagem gratuita), mostra o esqueleto
+  // no lugar do conteúdo, em vez de deixar a tela parada sem resposta.
+  const ESPERA_ESQUELETO = 300;
+  let timerEsqueleto = null;
+
+  function esqueleto(tipo) {
+    const linha = (largura) => `<div class="esqueleto esqueleto--texto" style="width:${largura}%"></div>`;
+    const card = `<div class="pilha-sm"><div class="esqueleto esqueleto--midia"></div>${linha(90)}${linha(50)}</div>`;
+    const corpo = tipo === 'produto'
+      ? `<div class="esqueleto esqueleto--midia" style="border-radius:0"></div><div class="conteudo pilha" style="padding-top:var(--spacing-xl)">
+           <div class="esqueleto esqueleto--titulo" style="width:80%"></div>${linha(40)}<div class="esqueleto esqueleto--titulo" style="width:35%;height:32px"></div>
+           <div class="linha">${'<div class="esqueleto" style="width:52px;height:44px;border-radius:12px"></div>'.repeat(5)}</div>${linha(95)}${linha(85)}</div>`
+      : `<div class="conteudo pilha"><div class="esqueleto esqueleto--titulo"></div>
+           <div class="linha">${'<div class="esqueleto" style="width:84px;height:36px;border-radius:999px"></div>'.repeat(3)}</div>
+           <div class="grade-produtos">${card.repeat(4)}</div></div>`;
+    const el = document.createElement('div');
+    el.className = 'carregando' + (tipo === 'produto' ? ' carregando--produto' : '');
+    el.setAttribute('role', 'status');
+    el.innerHTML = `<span class="visualmente-oculto">Carregando…</span>${corpo}`;
+    return el;
+  }
+
+  function agendarEsqueleto(destino) {
+    clearTimeout(timerEsqueleto);
+    const tipo = /produto\.php/.test(destino) ? 'produto' : 'lista';
+    timerEsqueleto = setTimeout(() => {
+      document.querySelectorAll('.carregando').forEach((el) => el.remove());
+      document.body.appendChild(esqueleto(tipo));
+    }, ESPERA_ESQUELETO);
+  }
+
+  document.addEventListener('click', (ev) => {
+    const link = ev.target.closest('a[href]');
+    if (!link || ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    if (link.target && link.target !== '_self') return;
+    const url = new URL(link.href, location.href);
+    if (url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
+    if (!/(index|esportes|resultados|produto|buscar|sacola|favoritos|pedidos)\.php$|\/$/.test(url.pathname)) return;
+    agendarEsqueleto(url.pathname);
+  });
+
+  document.addEventListener('submit', (ev) => {
+    const form = ev.target;
+    if (ev.defaultPrevented || (form.method || 'get').toLowerCase() !== 'get') return;
+    agendarEsqueleto(form.action || location.href);
+  });
+
+  // voltando pelo botão "Voltar", a página antiga reaparece: tira o esqueleto
+  window.addEventListener('pageshow', () => {
+    clearTimeout(timerEsqueleto);
+    document.querySelectorAll('.carregando').forEach((el) => el.remove());
+  });
+
+  // ---------- Site instalável e tela "Sem internet" (tela 29) ----------
+  window.addEventListener('offline', () => Triade.aviso('Você está sem internet', { tipo: 'erro', duracao: 5000 }));
+  window.addEventListener('online', () => Triade.aviso('Conexão de volta'));
+
+  const sw = document.documentElement.dataset.sw;
+  if (sw && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register(sw).catch(() => {}));
+  }
 })();

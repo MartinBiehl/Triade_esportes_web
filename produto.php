@@ -27,6 +27,13 @@ $guia         = guia_de_tamanhos($produto['guia_tamanhos']);
 $relacionados = produtos_relacionados($produto);
 $tamanho_unico = count($produto['tamanhos']) === 1;
 
+// Frete pelo CEP: vem do formulário (sem JavaScript) ou do último CEP calculado
+$cep_frete = so_numeros($_GET['cep'] ?? cep_lembrado());
+[$html_frete, $erro_frete] = $cep_frete !== '' ? frete_cep_html($cep_frete, $preco) : ['', null];
+if (!isset($_GET['cep']) && $erro_frete) {
+    [$html_frete, $erro_frete] = ['', null]; // CEP lembrado inválido: só não mostra nada
+}
+
 $voltar = url_resultados([], ['esporte' => $produto['esporte_slug'], 'categoria' => $produto['categoria_slug']]);
 $qtd    = sacola_quantidade();
 $acoes  = botao_favorito((int) $produto['id'], 'botao-icone--plain', 'produto.php?id=' . (int) $produto['id'])
@@ -134,7 +141,16 @@ pagina_inicio([
         ) ?></li>
         <li><?= linha_lista('Retire grátis em São Leopoldo em 1 dia útil', 'loja') ?></li>
       </ul>
-      <p class="t-footnote texto-terciario">O cálculo do frete pelo CEP aparece aqui na próxima etapa do projeto.</p>
+      <form class="frete-cep pilha-sm" id="frete" action="<?= e(url('produto.php')) ?>#frete" method="get"
+            data-frete="<?= e(url('api/frete.php')) ?>" data-valor="<?= e(number_format($preco, 2, '.', '')) ?>" novalidate>
+        <input type="hidden" name="id" value="<?= (int) $produto['id'] ?>">
+        <div class="frete-cep__linha">
+          <?= campo_texto('cep', 'Calcular frete e prazo', $cep_frete ? formatar_cep($cep_frete) : '', $erro_frete,
+              ['inputmode' => 'numeric', 'autocomplete' => 'postal-code', 'data-mascara' => 'cep', 'placeholder' => '93000-000', 'maxlength' => 9]) ?>
+          <button type="submit" class="botao botao--glass botao--md">Calcular</button>
+        </div>
+        <div id="frete-resultado" class="pilha-sm" aria-live="polite"><?= $html_frete ?></div>
+      </form>
     </section>
 
     <!-- Descrição -->

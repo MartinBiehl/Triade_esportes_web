@@ -40,9 +40,9 @@
   white-space: nowrap;
 }
 .selo--oficial  { background: var(--color-bg-inverse); color: var(--color-text-inverse); }
-.selo--promo    { background: var(--color-status-error); color: var(--white); }
+.selo--promo    { background: var(--color-text-error); color: var(--white); }
 .selo--novo     { background: var(--color-accent-primary); color: var(--color-text-on-accent); }
-.selo--frete    { background: rgb(31 184 106 / 0.14); color: #138a4e; }
+.selo--frete    { background: rgb(31 184 106 / 0.14); color: #0E6E3D; }
 .selo--esgotado { background: var(--color-bg-tertiary); color: var(--color-text-secondary); }
 
 /* =================================================================
@@ -373,7 +373,7 @@ textarea.campo__entrada { height: auto; min-height: 104px; padding-block: var(--
 
 .campo--erro .campo__entrada { border-color: var(--color-status-error); }
 .campo--erro .campo__entrada:focus { box-shadow: 0 0 0 4px rgb(242 57 75 / 0.14); }
-.campo--erro .campo__ajuda { color: var(--color-status-error); }
+.campo--erro .campo__ajuda { color: var(--color-text-error); }
 
 .campos-lado-a-lado { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
 
@@ -532,7 +532,7 @@ input:disabled + .opcao-tamanho::after {
 .card-produto__preco { display: flex; align-items: baseline; gap: 6px; margin-top: 2px; }
 .card-produto__preco-antigo { font-size: 13px; color: var(--color-text-tertiary); text-decoration: line-through; }
 .card-produto__parcelas { font-size: 12px; line-height: 16px; color: var(--color-text-secondary); }
-.card-produto__pix { font-size: 12px; line-height: 16px; font-weight: 600; color: #138a4e; }
+.card-produto__pix { font-size: 12px; line-height: 16px; font-weight: 600; color: var(--color-text-success); }
 
 /* Card horizontal para rolagem lateral no Início */
 .rolagem-horizontal .card-produto { width: 164px; }

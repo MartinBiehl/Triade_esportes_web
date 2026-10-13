@@ -71,7 +71,10 @@ pagina_inicio([
     <?php if (!$resumo['frete_gratis']): ?>
       <p class="t-footnote texto-secundario">Faltam <?= dinheiro($resumo['falta_frete']) ?> para o PAC sair de graça.</p>
     <?php endif; ?>
-    <p class="t-footnote texto-terciario">Valores e prazos simulados para o trabalho. O cálculo por região do CEP entra na etapa 8.</p>
+    <?php $regiao = regiao_do_cep($c['endereco']['cep']); ?>
+    <p class="t-footnote texto-terciario">
+      Frete para <?= e(formatar_cep($c['endereco']['cep'])) ?><?= $regiao ? ' · ' . e($regiao['nome']) : '' ?>. Valores e prazos simulados para o trabalho.
+    </p>
   </form>
 </div>
 <?= checkout_barra('form-etapa', 'Continuar', $totais['total'], 'Produtos + frete') ?>
