@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 5 (conta)**. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados) e a conta do cliente (entrar, criar conta, recuperar senha, pedidos com rastreio, endereços e favoritos).
+- Situação: **etapa 6 (institucional e estados)**. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular.
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -95,6 +95,11 @@ Triade_esportes_web/
 ├── resultados.php       04 · Resultados, 05 · Filtros e 06 · Sem resultado
 ├── produto.php          07 · Produto, 08 · Guia de tamanhos e 09 · Adicionado
 ├── sacola.php           10 · Sacola e 11 · Sacola vazia
+├── trocas.php           27 · Trocas e devoluções
+├── sobre.php            28 · Sobre e contato
+├── offline.html         29 · Sem internet (página guardada pelo sw.js)
+├── sw.js                ajudante do navegador: tela Sem internet e arquivos guardados
+├── manifest.json        nome, cores e ícones para instalar o site no celular
 ├── api/sacola.php       adiciona, altera e remove itens da sacola
 ├── api/favoritos.php    liga e desliga o coração de favorito
 ├── conta/               conta do cliente
@@ -136,13 +141,21 @@ Triade_esportes_web/
 │   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css, telas.css
 │   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js, conta.js
 │   ├── fonts/           fonte Inter (licença livre OFL)
-│   └── img/             icones.svg (ícones e silhuetas dos produtos)
+│   └── img/             icones.svg (ícones e silhuetas dos produtos) e app/ (ícone provisório do site)
 ├── sql/                 scripts do banco de dados
 │   ├── 00_criar_banco.sql
 │   ├── 01_estrutura.sql
 │   └── 02_dados.sql
 └── README.md
 ```
+
+## Site instalável (PWA)
+
+No celular, o navegador oferece **"Adicionar à tela inicial"**. O site abre como um app, sem a barra do navegador, com o ícone provisório da Triade.
+Se a internet cair, aparece a tela **Sem internet** (29), que volta sozinha quando a conexão retorna.
+Se uma página demorar para carregar, aparece o **esqueleto** (31) no lugar do conteúdo.
+
+> Isso só funciona em `http://localhost` (XAMPP) ou em endereço com `https://` (a InfinityFree oferece de graça em **SSL Certificates**). Para forçar o navegador a pegar uma versão nova do `sw.js`, troque o número em `VERSAO` dentro dele.
 
 ## Visual e animações
 
