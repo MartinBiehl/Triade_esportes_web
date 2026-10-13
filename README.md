@@ -93,11 +93,11 @@ O frete também é simulado: o preço e o prazo mudam conforme a região do CEP 
 ## Como publicar na InfinityFree (link público gratuito)
 
 1. Crie uma conta em <https://www.infinityfree.com> e crie uma hospedagem (pode usar o subdomínio grátis que eles oferecem).
-2. No painel da hospedagem, em **MySQL Databases**, crie um banco com o nome `triade`. Anote o **host**, o **nome do banco**, o **usuário** e a **senha** que aparecem.
-3. Abra o **phpMyAdmin** pelo painel, selecione o banco e importe **só** `sql/01_estrutura.sql` e depois `sql/02_dados.sql` (o `00` não funciona lá, o banco já foi criado no passo 2).
-4. No seu computador, copie `includes/config.local.exemplo.php` para `includes/config.local.php` e preencha com os dados do passo 2.
-5. Pelo **File Manager** do painel (ou por FTP com o FileZilla), envie todos os arquivos do projeto para a pasta `htdocs` da hospedagem, **incluindo** o `config.local.php`.
-6. Acesse o seu endereço. Deve abrir a tela Início da loja.
+2. No painel da hospedagem, em **MySQL Databases**, crie um banco com o nome `triade`. Anote o **MySQL Host Name** (`sqlXXX.infinityfree.com`), o **DB Name** (`if0_..._triade`) e o **User Name** (`if0_...`). A senha do banco é a senha da hospedagem, que aparece em **Account Details**.
+3. Ainda em **MySQL Databases**, clique em **phpMyAdmin** ao lado do banco. Confira se o nome do banco aparece no topo (se não, clique nele na lista da esquerda) e importe **só** `sql/01_estrutura.sql` e depois `sql/02_dados.sql`. O `00` não funciona lá: o banco já foi criado no passo 2.
+4. Pelo **File Manager** do painel (ou por FTP com o FileZilla, dados em **FTP Details**), apague o arquivo padrão da pasta `htdocs` e envie para dentro dela o **conteúdo** da pasta do projeto (as pastas `admin`, `api`, `assets`... e os arquivos soltos), não a pasta inteira. A pasta `.git` não precisa ir.
+5. **Na hospedagem**, dentro de `htdocs/includes`, crie o arquivo `config.local.php` com o conteúdo de `config.local.exemplo.php`, preenchido com os dados do passo 2. Não crie esse arquivo no projeto do seu computador: o XAMPP passaria a procurar o banco da InfinityFree e pararia de funcionar.
+6. Acesse o seu endereço. Deve abrir a tela Início da loja. Se aparecer "Banco de dados não conectado", quase sempre é erro de digitação no `config.local.php` (host ou senha).
 7. Confira a proteção: abra `seu-endereco/includes/config.php`. Tem que dar **403 (proibido)**. Se mostrar a página em branco ou baixar o arquivo, avise antes de divulgar o link.
 8. Entre em `seu-endereco/admin` e troque a senha do painel em **Trocar senha do painel**.
 
@@ -108,7 +108,7 @@ Cuidados na InfinityFree:
 - Fotos enviadas pelo painel no XAMPP **não vão sozinhas**: envie também a pasta `assets/img/produtos`. As fotos ficam fora do GitHub.
 - O `modo_debug` do `config.local.php` fica `false` lá, para não mostrar detalhes de erro para visitantes.
 
-> O `config.local.php` tem a senha do banco e por isso **não vai para o GitHub** (está no `.gitignore`). Ele só existe no seu computador e na hospedagem.
+> O `config.local.php` tem a senha do banco e por isso **não vai para o GitHub** (está no `.gitignore`). Ele só existe na hospedagem. Ao enviar atualizações, não apague nem substitua esse arquivo lá.
 
 ---
 
