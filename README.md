@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 4 (compra)**. Já funcionam o Início, Esportes, Busca, Filtros, Produto, a Sacola e a compra completa (Pix, cartão e boleto simulados).
+- Situação: **etapa 5 (conta)**. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados) e a conta do cliente (entrar, criar conta, recuperar senha, pedidos com rastreio, endereços e favoritos).
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -63,6 +63,11 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 | Cartão terminado em `0002` (ex.: `4000 0000 0000 0002`) | Recusado (tela 30). O pedido não é criado e o estoque não muda. |
 | Boleto | Pedido criado aguardando pagamento. |
 
+### Conta de teste
+
+Entre com `ana@exemplo.com` / `triade123`. Ela já tem 2 pedidos (um a caminho, com código de rastreio), 1 endereço e favoritos.
+O "Esqueci minha senha" não manda e-mail de verdade: o link para criar a senha nova aparece na própria tela, marcado como simulação.
+
 O frete ainda tem valores fixos (PAC, SEDEX, Transportadora e Retirada). O cálculo por região do CEP fica para a etapa 8. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
 
 ---
@@ -91,6 +96,19 @@ Triade_esportes_web/
 ├── produto.php          07 · Produto, 08 · Guia de tamanhos e 09 · Adicionado
 ├── sacola.php           10 · Sacola e 11 · Sacola vazia
 ├── api/sacola.php       adiciona, altera e remove itens da sacola
+├── api/favoritos.php    liga e desliga o coração de favorito
+├── conta/               conta do cliente
+│   ├── entrar.php       19 · Entrar
+│   ├── criar.php        20 · Criar conta (vindo do pedido, já vem preenchido)
+│   ├── recuperar.php    21 · Recuperar senha (e-mail simulado na tela)
+│   ├── nova-senha.php   link do e-mail de recuperação
+│   ├── index.php        22 · Conta
+│   ├── pedidos.php      23 · Meus pedidos
+│   ├── pedido.php       24 · Detalhe do pedido com rastreio
+│   ├── enderecos.php    25 · Endereços
+│   ├── endereco.php     adicionar ou editar endereço
+│   ├── favoritos.php    26 · Favoritos
+│   └── sair.php         sair da conta
 ├── checkout/            compra, uma página por passo
 │   ├── index.php        início da compra (manda para o passo que falta)
 │   ├── identificacao.php 12 · Identificação
@@ -112,10 +130,11 @@ Triade_esportes_web/
 │   ├── sacola.php       sacola guardada na sessão
 │   ├── frete.php        opções de entrega e prazos (valores fixos por enquanto)
 │   ├── checkout.php     passos da compra, validações e criação do pedido
+│   ├── conta.php        login, cadastro, senha, pedidos, endereços e favoritos
 │   └── layout.php       moldura das páginas (cabeçalho e barra de abas)
 ├── assets/
 │   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css, telas.css
-│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js
+│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js, conta.js
 │   ├── fonts/           fonte Inter (licença livre OFL)
 │   └── img/             icones.svg (ícones e silhuetas dos produtos)
 ├── sql/                 scripts do banco de dados

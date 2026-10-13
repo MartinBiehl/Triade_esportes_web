@@ -6,7 +6,14 @@ require __DIR__ . '/../includes/bootstrap.php';
 checkout_exigir('identificacao');
 
 $c = &checkout();
-$dados = $c['identificacao'] ?? ['nome' => '', 'email' => '', 'cpf' => '', 'telefone' => ''];
+$cliente = cliente_logado();
+$dados = $c['identificacao'] ?? [
+    // com login, os dados da conta já vêm preenchidos
+    'nome'     => $cliente['nome'] ?? '',
+    'email'    => $cliente['email'] ?? '',
+    'cpf'      => $cliente['cpf'] ?? '',
+    'telefone' => so_numeros($cliente['telefone'] ?? ''),
+];
 $erros = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,7 +36,11 @@ pagina_inicio([
   <section class="pilha-sm">
     <h1 class="t-title-2">Quem está comprando?</h1>
     <p class="t-subheadline texto-secundario">
-      Não precisa criar conta. Usamos estes dados para a nota fiscal e para avisar sobre a entrega.
+      <?php if ($cliente): ?>
+        Confira seus dados. Usamos para a nota fiscal e para avisar sobre a entrega.
+      <?php else: ?>
+        Não precisa criar conta. Usamos estes dados para a nota fiscal e para avisar sobre a entrega.
+      <?php endif; ?>
     </p>
   </section>
 
@@ -48,9 +59,11 @@ pagina_inicio([
     </div>
   </form>
 
-  <p class="t-subheadline texto-secundario" style="text-align: center">
-    Já tem conta? <a href="<?= e(url('conta/entrar.php?voltar=checkout')) ?>">Entrar</a>
-  </p>
+  <?php if (!$cliente): ?>
+    <p class="t-subheadline texto-secundario" style="text-align: center">
+      Já tem conta? <a href="<?= e(url('conta/entrar.php?voltar=checkout')) ?>">Entrar</a>
+    </p>
+  <?php endif; ?>
 </div>
 <?= checkout_barra('form-etapa', 'Continuar', $resumo['subtotal'], $resumo['quantidade'] . ($resumo['quantidade'] == 1 ? ' item' : ' itens')) ?>
 <?php pagina_fim(['scripts' => ['validacao.js']]); ?>

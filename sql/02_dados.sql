@@ -160,16 +160,16 @@ INSERT INTO favoritos (cliente_id, produto_id) VALUES (1, 2), (1, 15), (1, 18);
 INSERT INTO pedidos
   (id, numero, cliente_id, nome, email, cpf, telefone, cep, logradouro, numero_end, complemento,
    bairro, cidade, uf, entrega_tipo, entrega_prazo, pagamento_tipo, parcelas,
-   subtotal, frete, desconto, total, status, criado_em)
+   subtotal, frete, desconto, total, codigo_rastreio, status, criado_em)
 VALUES
   (1, 'TR-20481', 1, 'Ana Souza', 'ana@exemplo.com', '12345678909', '(51) 99999-0000',
    '93010000', 'Rua Independência', '450', 'Apto 302', 'Centro', 'São Leopoldo', 'RS',
    'pac', 'Entre 20 e 23 de out.', 'pix', 1,
-   667.82, 0.00, 33.39, 634.43, 'enviado', '2026-10-11 10:12:00'),
+   667.82, 0.00, 33.39, 634.43, 'QB482915376BR', 'enviado', '2026-10-11 10:12:00'),
   (2, 'TR-19877', 1, 'Ana Souza', 'ana@exemplo.com', '12345678909', '(51) 99999-0000',
    NULL, NULL, NULL, NULL, NULL, NULL, NULL,
    'retirada', 'Pronto em 1 dia útil', 'cartao', 2,
-   199.90, 0.00, 0.00, 199.90, 'entregue', '2026-09-02 16:40:00');
+   199.90, 0.00, 0.00, 199.90, NULL, 'entregue', '2026-09-02 16:40:00');
 
 INSERT INTO pedido_itens (pedido_id, produto_id, nome_produto, tamanho, quantidade, preco_unitario) VALUES
   (1, 1,  'Camisa Grêmio I 26/27',    'M',     1, 299.90),

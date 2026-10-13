@@ -185,3 +185,12 @@ function campo_texto(string $nome, string $rotulo, ?string $valor = '', ?string 
          . '<span class="campo__ajuda" id="' . e($id) . '-ajuda" data-ajuda-original="' . e($ajuda ?? '') . '">' . e($texto_ajuda ?? '') . '</span>'
          . '</div>';
 }
+
+/** Campo de senha com o botão de olho para mostrar o que foi digitado. */
+function campo_senha(string $nome, string $rotulo, ?string $erro = null, array $attrs = [], ?string $ajuda = null): string
+{
+    $html = campo_texto($nome, $rotulo, '', $erro, ['type' => 'password', 'maxlength' => 72] + $attrs, $ajuda);
+    $botao = '<button type="button" class="campo__olho botao-icone botao-icone--plain botao-icone--sm" data-mostrar-senha aria-label="Mostrar senha" aria-pressed="false">'
+           . icone('olho', 'icone--sm') . '</button>';
+    return preg_replace('/(<input class="campo__entrada"[^>]*>)/', '<div class="campo__grupo">$1' . $botao . '</div>', $html, 1);
+}

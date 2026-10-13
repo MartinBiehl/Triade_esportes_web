@@ -1,5 +1,6 @@
 /*
  * checkout.js · etapas da compra
+ *  - Endereço: mostra os campos só quando o cliente escolhe "Outro endereço"
  *  - Entrega: atualiza o total da barra inferior ao trocar a opção
  *  - Pagamento: mostra os campos do cartão só quando o cartão está escolhido
  *  - Pix aguardando: contagem regressiva e botão de copiar o código
@@ -17,6 +18,22 @@
     formEntrega.addEventListener('change', (ev) => {
       if (ev.target.name === 'entrega') totalBarra.textContent = dinheiro(subtotal + Number(ev.target.dataset.preco));
     });
+  }
+
+  // ---------- Endereço: salvo ou novo ----------
+  const formEnderecos = document.querySelector('form[data-enderecos]');
+  const novoEndereco = document.getElementById('novo-endereco');
+  if (formEnderecos && novoEndereco && formEnderecos.querySelector('input[type="radio"][name="endereco_salvo"]')) {
+    const mostrarNovo = () => {
+      const escolhido = formEnderecos.querySelector('input[name="endereco_salvo"]:checked');
+      novoEndereco.hidden = !escolhido || escolhido.value !== 'novo';
+    };
+    formEnderecos.addEventListener('change', (ev) => {
+      if (ev.target.name !== 'endereco_salvo') return;
+      mostrarNovo();
+      if (!novoEndereco.hidden) novoEndereco.querySelector('input').focus({ preventScroll: true });
+    });
+    mostrarNovo();
   }
 
   // ---------- Pagamento ----------
@@ -62,7 +79,7 @@
       const alvo = document.getElementById(botao.dataset.copiar);
       try {
         await navigator.clipboard.writeText(alvo.value || alvo.textContent);
-        Triade.aviso('Código Pix copiado');
+        Triade.aviso(botao.dataset.copiado || 'Código Pix copiado');
       } catch (e) {
         alvo.select && alvo.select();
         Triade.aviso('Selecione e copie o código', { tipo: 'erro' });
