@@ -11,12 +11,12 @@ $pedido = pedido_da_sessao((string) ($_GET['pedido'] ?? ''));
 if (!$pedido || $pedido['pagamento_tipo'] !== 'pix') {
     redirecionar('index.php');
 }
-if ($pedido['status'] !== 'aguardando_pagamento') {
+if (!in_array($pedido['status'], ['aguardando_pagamento', 'cancelado'], true)) {
     redirecionar('checkout/confirmado.php?pedido=' . urlencode($pedido['numero']));
 }
 
 $expira = (new DateTimeImmutable($pedido['criado_em']))->modify('+' . PIX_VALIDADE_MINUTOS . ' minutes');
-$expirado = $expira < new DateTimeImmutable();
+$expirado = $pedido['status'] === 'cancelado' || $expira < new DateTimeImmutable();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$expirado) {
     csrf_validar();
@@ -36,8 +36,9 @@ pagina_inicio([
     <div class="estado-vazio">
       <div class="estado-vazio__icone estado-vazio__icone--erro"><?= icone('relogio') ?></div>
       <h1 class="t-title-3">O código Pix expirou</h1>
-      <p class="t-subheadline">O pedido #<?= e($pedido['numero']) ?> ficou sem pagamento. Fale com a gente no WhatsApp para gerar um novo código.</p>
-      <a class="botao botao--accent botao--md" href="https://wa.me/<?= e(CONTATO_WHATSAPP) ?>"><?= icone('whatsapp', 'icone--sm') ?> Falar no WhatsApp</a>
+      <p class="t-subheadline">O pedido #<?= e($pedido['numero']) ?> ficou sem pagamento e foi cancelado. Os produtos voltaram para a loja: se ainda quiser, é só comprar de novo.</p>
+      <a class="botao botao--primary botao--md" href="<?= e(url('index.php')) ?>">Voltar para a loja</a>
+      <a class="botao botao--ghost botao--md" href="https://wa.me/<?= e(CONTATO_WHATSAPP) ?>"><?= icone('whatsapp', 'icone--sm') ?> Falar no WhatsApp</a>
     </div>
   <?php else: ?>
     <section class="pilha-sm" style="text-align: center; align-items: center">

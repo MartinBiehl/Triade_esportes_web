@@ -287,18 +287,6 @@ function mudar_status_pedido(array $pedido, string $novo, string $rastreio = '',
     return null;
 }
 
-/** As peças de um pedido cancelado voltam para o estoque (o estoque sai quando o pedido é feito). */
-function devolver_estoque(int $pedido_id): void
-{
-    $itens = consulta('SELECT produto_id, tamanho, quantidade FROM pedido_itens WHERE pedido_id = ? AND produto_id IS NOT NULL', [$pedido_id])->fetchAll();
-    foreach ($itens as $item) {
-        consulta(
-            'UPDATE produto_tamanhos SET estoque = estoque + ? WHERE produto_id = ? AND tamanho = ?',
-            [$item['quantidade'], $item['produto_id'], $item['tamanho']]
-        );
-    }
-}
-
 /** Corrige o código de rastreio de um pedido já enviado. */
 function corrigir_rastreio(array $pedido, string $codigo): ?string
 {
