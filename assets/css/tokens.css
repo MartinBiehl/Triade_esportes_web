@@ -1,0 +1,124 @@
+/*
+ * Triade Esporte · tokens de design
+ * Mesmos nomes das variáveis do Figma: "bg/primary" vira var(--color-bg-primary).
+ * Para mudar uma cor da loja inteira, mude só aqui.
+ */
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-variavel.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Cores primitivas ---------- */
+  --blue-700: #0040C9;
+  --blue-600: #0052FF;
+  --blue-500: #2E6BFF;
+  --blue-400: #5C8DFF;
+  --blue-100: #E6EEFF;
+  --lime-600: #A9D400;
+  --lime-500: #C8F31D;
+  --ink-950: #07090D;
+  --ink-900: #0E1117;
+  --ink-800: #161A22;
+  --ink-700: #232834;
+  --gray-600: #5B6272;
+  --gray-500: #7C8394;
+  --gray-400: #A3A9B6;
+  --gray-300: #C9CDD5;
+  --gray-200: #E3E5EA;
+  --gray-100: #F1F2F5;
+  --gray-50:  #F8F8FA;
+  --white: #FFFFFF;
+  --green-500: #1FB86A;
+  --orange-500: #FF8A00;
+  --red-500: #F2394B;
+
+  /* ---------- Cores semânticas (modo claro) ---------- */
+  --color-bg-primary: var(--gray-50);
+  --color-bg-secondary: var(--white);
+  --color-bg-tertiary: var(--gray-100);
+  --color-bg-elevated: var(--white);
+  --color-bg-inverse: var(--ink-950);
+
+  --color-text-primary: var(--ink-950);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-500);
+  --color-text-on-brand: var(--white);
+  --color-text-on-accent: var(--ink-950);
+  --color-text-link: var(--blue-600);
+  --color-text-inverse: var(--white);
+
+  --color-brand-primary: var(--blue-600);
+  --color-brand-pressed: var(--blue-700);
+  --color-brand-subtle: var(--blue-100);
+  --color-accent-primary: var(--lime-500);
+  --color-accent-pressed: var(--lime-600);
+
+  --color-border-default: var(--gray-200);
+  --color-border-strong: var(--gray-300);
+
+  --color-status-success: var(--green-500);
+  --color-status-warning: var(--orange-500);
+  --color-status-error: var(--red-500);
+
+  --color-glass-fill: rgb(255 255 255 / 0.62);
+  --color-glass-fill-thick: rgb(255 255 255 / 0.82);
+  --color-glass-fill-dark: rgb(20 23 29 / 0.55);
+  --color-glass-fill-tint: rgb(0 82 255 / 0.80);
+  --color-glass-stroke: rgb(255 255 255 / 0.70);
+  --color-glass-highlight: rgb(255 255 255 / 0.95);
+
+  --color-overlay-scrim: rgb(0 0 0 / 0.32);
+
+  /* ---------- Espaçamento ---------- */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+  --spacing-4xl: 40px;
+  --spacing-5xl: 56px;
+
+  /* ---------- Raios ---------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+  --radius-full: 999px;
+
+  /* ---------- Tipografia ---------- */
+  --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* ---------- Efeitos ---------- */
+  /* Vidro = fundo translúcido + desfoque + linha de brilho interna no topo + sombra */
+  --glass-thin-blur: 12px;
+  --glass-regular-blur: 24px;
+  --glass-thick-blur: 40px;
+  --glass-highlight-line: inset 0 1px 0 var(--color-glass-highlight);
+
+  --shadow-glass-thin: 0 2px 8px rgb(7 9 13 / 0.08);
+  --shadow-glass-regular: 0 8px 24px rgb(7 9 13 / 0.12);
+  --shadow-glass-thick: 0 -8px 40px rgb(7 9 13 / 0.18);
+  --shadow-card: 0 1px 2px rgb(7 9 13 / 0.04), 0 4px 12px rgb(7 9 13 / 0.06);
+  --shadow-floating: 0 8px 24px rgb(7 9 13 / 0.14);
+
+  /* ---------- Movimento ---------- */
+  --ease-padrao: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duracao-curta: 160ms;
+  --duracao-media: 300ms;
+
+  /* ---------- Medidas da interface ---------- */
+  --largura-app: 1080px;        /* largura máxima do conteúdo no computador */
+  --largura-leitura: 560px;     /* formulários e textos longos */
+  --altura-tab-bar: 64px;
+  --area-segura-baixo: env(safe-area-inset-bottom, 0px);
+  --area-segura-topo: env(safe-area-inset-top, 0px);
+}

@@ -7,6 +7,8 @@
 require __DIR__ . '/config.php';
 require __DIR__ . '/db.php';
 require __DIR__ . '/funcoes.php';
+require __DIR__ . '/componentes.php';
+require __DIR__ . '/layout.php';
 
 date_default_timezone_set('America/Sao_Paulo');
 mb_internal_encoding('UTF-8');

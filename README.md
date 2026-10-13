@@ -4,7 +4,8 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 0 (preparação)**. As telas da loja chegam nas próximas etapas.
+- Situação: **etapa 1 (base visual)**. As telas da loja chegam nas próximas etapas.
+- Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
 
@@ -73,18 +74,33 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 ```
 Triade_esportes_web/
 ├── index.php            página inicial (provisória nesta etapa)
+├── guia-de-estilo.php   todos os componentes visuais numa página
 ├── includes/            arquivos internos, bloqueados para o navegador
 │   ├── bootstrap.php    carregado no topo de toda página
 │   ├── config.php       banco de dados, regras de negócio e contatos
 │   ├── db.php           conexão com o MySQL
-│   └── funcoes.php      funções de apoio (preço, parcelas, CPF, segurança)
-├── assets/              CSS, JavaScript e imagens
+│   ├── funcoes.php      funções de apoio (preço, parcelas, CPF, segurança)
+│   ├── componentes.php  HTML dos componentes (card de produto, selos, painel...)
+│   └── layout.php       moldura das páginas (cabeçalho e barra de abas)
+├── assets/
+│   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css
+│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js
+│   ├── fonts/           fonte Inter (licença livre OFL)
+│   └── img/             icones.svg (ícones e silhuetas dos produtos)
 ├── sql/                 scripts do banco de dados
 │   ├── 00_criar_banco.sql
 │   ├── 01_estrutura.sql
 │   └── 02_dados.sql
 └── README.md
 ```
+
+## Visual e animações
+
+- Cores, espaçamentos, raios e textos vêm das variáveis do Figma, em `assets/css/tokens.css`, com os mesmos nomes (`bg/primary` vira `var(--color-bg-primary)`).
+- Vidro (desfoque do fundo) só na interface que flutua: cabeçalho, barra de abas, botões principais, painéis e avisos.
+- As animações de mola (`assets/js/mola.js`) continuam do ponto e da velocidade em que estavam, por isso um painel arrastado e solto rápido fecha no mesmo embalo.
+- Se o celular estiver com **reduzir movimento** ligado, as animações viram um esmaecer simples. Com **reduzir transparência**, o vidro vira fundo sólido.
+- A troca entre páginas é animada nos navegadores que suportam (Chrome e Android). Nos outros, a página só troca.
 
 ## Regras de negócio
 

@@ -59,6 +59,7 @@ try {
       <?= $totais['categorias'] ?> categorias · <?= $totais['produtos'] ?> produtos ·
       <?= $totais['clientes'] ?> cliente de teste · <?= $totais['pedidos'] ?> pedidos de exemplo
     </p>
+    <p><a href="<?= e(url('guia-de-estilo.php')) ?>">Ver o guia de estilo (etapa 1)</a></p>
   <?php endif; ?>
 </body>
 </html>
