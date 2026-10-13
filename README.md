@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 1 (base visual)**. As telas da loja chegam nas próximas etapas.
+- Situação: **etapa 4 (compra)**. Já funcionam o Início, Esportes, Busca, Filtros, Produto, a Sacola e a compra completa (Pix, cartão e boleto simulados).
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -43,7 +43,7 @@ Fica assim: `C:\xampp\htdocs\Triade_esportes_web\index.php`.
 ### 4. Abrir o site
 
 Acesse <http://localhost/Triade_esportes_web>.
-Nesta etapa aparece uma página de conferência dizendo **"Banco de dados conectado"** e quantos produtos existem.
+Deve abrir a tela Início da loja. Se aparecer **"Banco de dados não conectado"**, confira se o MySQL está ligado e se os scripts foram importados.
 
 Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M**, e escolha um iPhone ou Android no topo.
 
@@ -53,6 +53,17 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 |---|---|---|
 | Cliente | `ana@exemplo.com` | `triade123` |
 | Painel da loja (etapa futura) | `admin@triade.com.br` | `triade123` |
+
+### Pagamento de teste (tudo simulado, nada é cobrado)
+
+| Forma | O que acontece |
+|---|---|
+| Pix | Mostra um QR Code e um código de exemplo. O botão **Simular pagamento aprovado** confirma o pedido. |
+| Cartão `4111 1111 1111 1111` | Aprovado. Qualquer nome, validade futura e CVV de 3 números. |
+| Cartão terminado em `0002` (ex.: `4000 0000 0000 0002`) | Recusado (tela 30). O pedido não é criado e o estoque não muda. |
+| Boleto | Pedido criado aguardando pagamento. |
+
+O frete ainda tem valores fixos (PAC, SEDEX, Transportadora e Retirada). O cálculo por região do CEP fica para a etapa 8. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
 
 ---
 
@@ -73,7 +84,23 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 
 ```
 Triade_esportes_web/
-├── index.php            página inicial (provisória nesta etapa)
+├── index.php            01 · Início
+├── esportes.php         02 · Esportes
+├── buscar.php           03 · Buscar
+├── resultados.php       04 · Resultados, 05 · Filtros e 06 · Sem resultado
+├── produto.php          07 · Produto, 08 · Guia de tamanhos e 09 · Adicionado
+├── sacola.php           10 · Sacola e 11 · Sacola vazia
+├── api/sacola.php       adiciona, altera e remove itens da sacola
+├── checkout/            compra, uma página por passo
+│   ├── index.php        início da compra (manda para o passo que falta)
+│   ├── identificacao.php 12 · Identificação
+│   ├── endereco.php     13 · Endereço
+│   ├── entrega.php      14 · Entrega
+│   ├── pagamento.php    15 · Pagamento e 15b · Cartão
+│   ├── revisao.php      16 · Revisão (cria o pedido)
+│   ├── pix.php          17 · Pix aguardando
+│   ├── confirmado.php   18 · Pedido confirmado
+│   └── recusado.php     30 · Pagamento recusado
 ├── guia-de-estilo.php   todos os componentes visuais numa página
 ├── includes/            arquivos internos, bloqueados para o navegador
 │   ├── bootstrap.php    carregado no topo de toda página
@@ -81,10 +108,14 @@ Triade_esportes_web/
 │   ├── db.php           conexão com o MySQL
 │   ├── funcoes.php      funções de apoio (preço, parcelas, CPF, segurança)
 │   ├── componentes.php  HTML dos componentes (card de produto, selos, painel...)
+│   ├── catalogo.php     consultas de produtos, busca e filtros
+│   ├── sacola.php       sacola guardada na sessão
+│   ├── frete.php        opções de entrega e prazos (valores fixos por enquanto)
+│   ├── checkout.php     passos da compra, validações e criação do pedido
 │   └── layout.php       moldura das páginas (cabeçalho e barra de abas)
 ├── assets/
-│   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css
-│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js
+│   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css, telas.css
+│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js, sacola.js, validacao.js, checkout.js
 │   ├── fonts/           fonte Inter (licença livre OFL)
 │   └── img/             icones.svg (ícones e silhuetas dos produtos)
 ├── sql/                 scripts do banco de dados

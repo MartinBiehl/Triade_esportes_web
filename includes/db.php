@@ -26,6 +26,9 @@ function db(): PDO
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
         ]);
+
+        // mesmo fuso do PHP, para as datas gravadas pelo MySQL (criado_em) baterem com as do site
+        $pdo->exec("SET time_zone = '" . (new DateTime())->format('P') . "'");
     }
 
     return $pdo;

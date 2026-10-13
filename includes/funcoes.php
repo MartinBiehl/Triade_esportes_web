@@ -145,6 +145,29 @@ function csrf_validar(): void
 }
 
 // ---------------------------------------------------------------
+// Avisos entre páginas (ex.: "Adicionado à sacola" depois de um redirecionamento)
+// ---------------------------------------------------------------
+
+function aviso_definir(string $texto, string $tipo = 'sucesso', ?array $acao = null): void
+{
+    $_SESSION['aviso'] = ['texto' => $texto, 'tipo' => $tipo, 'acao' => $acao];
+}
+
+/** Lê e apaga o aviso guardado. */
+function aviso_obter(): ?array
+{
+    $aviso = $_SESSION['aviso'] ?? null;
+    unset($_SESSION['aviso']);
+    return $aviso;
+}
+
+/** O pedido veio do JavaScript (fetch) e espera JSON? */
+function pedido_ajax(): bool
+{
+    return ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'fetch';
+}
+
+// ---------------------------------------------------------------
 // Respostas para o JavaScript (pasta api/)
 // ---------------------------------------------------------------
 
