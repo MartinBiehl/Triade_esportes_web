@@ -165,6 +165,7 @@ CREATE TABLE pedidos (
   frete          DECIMAL(10,2) NOT NULL DEFAULT 0,
   desconto       DECIMAL(10,2) NOT NULL DEFAULT 0,
   total          DECIMAL(10,2) NOT NULL,
+  codigo_rastreio VARCHAR(20)  NULL,            -- código dos Correios/transportadora, quando enviado
   status         ENUM('aguardando_pagamento', 'pagamento_recusado', 'pago', 'em_separacao',
                       'enviado', 'pronto_retirada', 'entregue', 'cancelado')
                  NOT NULL DEFAULT 'aguardando_pagamento',

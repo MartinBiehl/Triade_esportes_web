@@ -32,6 +32,7 @@ ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
 img, svg { display: block; max-width: 100%; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
+[hidden] { display: none !important; } /* "hidden" sempre esconde, mesmo em elementos com display: flex */
 a { color: var(--color-text-link); text-decoration: none; }
 
 :focus-visible {

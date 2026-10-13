@@ -29,7 +29,8 @@ $tamanho_unico = count($produto['tamanhos']) === 1;
 
 $voltar = url_resultados([], ['esporte' => $produto['esporte_slug'], 'categoria' => $produto['categoria_slug']]);
 $qtd    = sacola_quantidade();
-$acoes  = '<button type="button" class="botao-icone botao-icone--plain" data-compartilhar aria-label="Compartilhar">' . icone('compartilhar') . '</button>'
+$acoes  = botao_favorito((int) $produto['id'], 'botao-icone--plain', 'produto.php?id=' . (int) $produto['id'])
+        . '<button type="button" class="botao-icone botao-icone--plain" data-compartilhar aria-label="Compartilhar">' . icone('compartilhar') . '</button>'
         . '<a class="botao-icone botao-icone--plain" href="' . e(url('sacola.php')) . '" aria-label="Sacola">' . icone('sacola')
         . '<span class="tab-bar__contador" data-contador-sacola' . ($qtd ? '' : ' hidden') . '>' . $qtd . '</span></a>';
 
@@ -205,4 +206,4 @@ pagina_inicio([
   <?= painel_fim('<button type="button" class="botao botao--primary botao--bloco" data-fechar-painel>Entendi</button>') ?>
 <?php endif; ?>
 
-<?php pagina_fim(['scripts' => ['produto.js']]); ?>
+<?php pagina_fim(['scripts' => ['produto.js', 'conta.js']]); ?>

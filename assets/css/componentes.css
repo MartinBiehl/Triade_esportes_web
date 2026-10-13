@@ -1041,3 +1041,16 @@ a.linha-lista:active, button.linha-lista:active { background: var(--color-bg-ter
 @media (prefers-reduced-motion: reduce) {
   .esqueleto::after { animation: none; }
 }
+
+/* Campo com botão dentro (senha com olho) */
+.campo__grupo { position: relative; }
+.campo__grupo .campo__entrada { padding-right: 52px; }
+.campo__olho {
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-sm);
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+}
+.campo__olho[aria-pressed="true"] { color: var(--color-brand-primary); }
+.campo__olho[aria-pressed="true"] .icone { fill: none; }
