@@ -1,0 +1,169 @@
+/*
+ * Triade Esporte · base
+ * Ajustes gerais do navegador, tipografia e estrutura das páginas.
+ */
+
+/* ---------- Ajustes gerais ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.002em;
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11", "ss01"; /* "a" e "1" mais limpos da Inter */
+}
+
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--color-text-link); text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Estilos de texto (iguais ao Figma) ---------- */
+
+.t-display     { font-size: 40px; line-height: 44px; font-weight: 700; letter-spacing: -0.022em; }
+.t-title-1     { font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.016em; }
+.t-title-2     { font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.012em; }
+.t-title-3     { font-size: 20px; line-height: 25px; font-weight: 600; letter-spacing: -0.008em; }
+.t-headline    { font-size: 17px; line-height: 22px; font-weight: 600; letter-spacing: -0.004em; }
+.t-body        { font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: -0.002em; }
+.t-body-strong { font-size: 16px; line-height: 24px; font-weight: 600; letter-spacing: -0.002em; }
+.t-callout     { font-size: 15px; line-height: 20px; font-weight: 500; letter-spacing: -0.002em; }
+.t-subheadline { font-size: 14px; line-height: 20px; font-weight: 400; letter-spacing: 0; }
+.t-footnote    { font-size: 13px; line-height: 18px; font-weight: 400; letter-spacing: 0.002em; }
+.t-caption     { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.004em; }
+.t-label-caps  { font-size: 11px; line-height: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.t-price       { font-size: 20px; line-height: 24px; font-weight: 700; letter-spacing: -0.008em; font-variant-numeric: tabular-nums; }
+.t-price-large { font-size: 28px; line-height: 32px; font-weight: 700; letter-spacing: -0.014em; font-variant-numeric: tabular-nums; }
+
+.texto-secundario { color: var(--color-text-secondary); }
+.texto-terciario  { color: var(--color-text-tertiary); }
+.texto-sucesso    { color: var(--color-status-success); }
+.texto-erro       { color: var(--color-status-error); }
+.riscado          { text-decoration: line-through; }
+
+/* ---------- Estrutura das páginas ---------- */
+
+/* Espaço para o cabeçalho e a barra de abas, que flutuam por cima do conteúdo */
+.pagina {
+  min-height: 100dvh;
+  padding-top: calc(var(--area-segura-topo) + 8px);
+  padding-bottom: calc(var(--altura-tab-bar) + var(--area-segura-baixo) + 40px);
+}
+.pagina--interna { padding-top: calc(var(--area-segura-topo) + 64px); }
+.pagina--sem-abas { padding-bottom: calc(var(--area-segura-baixo) + 120px); }
+
+.conteudo {
+  width: 100%;
+  max-width: var(--largura-app);
+  margin-inline: auto;
+  padding-inline: var(--spacing-lg);
+}
+.conteudo--leitura { max-width: var(--largura-leitura); }
+
+.pilha    { display: flex; flex-direction: column; gap: var(--spacing-lg); }
+.pilha-sm { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.pilha-xl { display: flex; flex-direction: column; gap: var(--spacing-3xl); }
+.linha    { display: flex; align-items: center; gap: var(--spacing-sm); }
+.linha--entre { justify-content: space-between; }
+
+/* Grade de produtos: 2 colunas no celular, mais colunas conforme a tela cresce */
+.grade-produtos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-lg) var(--spacing-md);
+}
+@media (min-width: 640px)  { .grade-produtos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 960px)  { .grade-produtos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--spacing-2xl); } }
+
+/* Faixa que rola para o lado e encaixa item por item */
+.rolagem-horizontal {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--spacing-lg);
+  padding-inline: var(--spacing-lg);
+  margin-inline: calc(var(--spacing-lg) * -1);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.rolagem-horizontal::-webkit-scrollbar { display: none; }
+.rolagem-horizontal > * { scroll-snap-align: start; flex-shrink: 0; }
+
+/* Esconde da tela, mas o leitor de tela continua lendo */
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Trava a rolagem da página enquanto um painel está aberto */
+.sem-rolagem { overflow: hidden; }
+
+/* ---------- Ícones ---------- */
+
+.icone {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icone--sm { width: 20px; height: 20px; }
+.icone--xs { width: 16px; height: 16px; }
+.icone--preenchido { fill: currentColor; }
+
+/* ---------- Troca de página ---------- */
+/* Navegadores que suportam (Chrome/Android) animam a troca entre páginas.
+   Nos outros a página só troca, sem erro. */
+
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+  animation: 220ms var(--ease-padrao) both saida-pagina;
+}
+::view-transition-new(root) {
+  animation: 320ms cubic-bezier(0.2, 0.9, 0.3, 1) both entrada-pagina;
+}
+@keyframes saida-pagina  { to   { opacity: 0; transform: translateX(-12%); } }
+@keyframes entrada-pagina { from { opacity: 0; transform: translateX(16%); } }
+
+/* ---------- Acessibilidade: preferências do sistema ---------- */
+
+/* "Reduzir movimento": troca deslizamentos por um esmaecer simples */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root) { animation: 160ms linear both esmaecer-saida; }
+  ::view-transition-new(root) { animation: 160ms linear both esmaecer-entrada; }
+  @keyframes esmaecer-saida   { to   { opacity: 0; } }
+  @keyframes esmaecer-entrada { from { opacity: 0; } }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,7 @@
+# Senhas do banco de cada máquina/hospedagem
+includes/config.local.php
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
