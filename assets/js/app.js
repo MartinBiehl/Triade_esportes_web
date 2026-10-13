@@ -37,6 +37,41 @@
     }, { passive: true });
   }
 
+  // ---------- Aviso vindo do PHP (depois de enviar um formulário sem JavaScript) ----------
+  const pendente = document.getElementById('aviso-pendente');
+  if (pendente) {
+    const d = pendente.dataset;
+    Triade.aviso(d.texto, {
+      tipo: d.tipo,
+      acao: d.acaoRotulo ? { rotulo: d.acaoRotulo, href: d.acaoHref } : null,
+    });
+  }
+
+  // ---------- Contador da sacola na barra de abas ----------
+  Triade.atualizarContadorSacola = function (quantidade) {
+    document.querySelectorAll('[data-contador-sacola]').forEach((el) => {
+      el.textContent = quantidade;
+      el.hidden = quantidade < 1;
+      if (quantidade > 0 && !Triade.reduzirMovimento()) {
+        // pulinho para chamar atenção
+        Triade.mola({ de: 1.5, para: 1, damping: 0.5, response: 0.35,
+          aoAtualizar: (v) => { el.style.transform = `scale(${v})`; } });
+      }
+    });
+  };
+
+  /** Envia um formulário com fetch e devolve o JSON da resposta. */
+  Triade.enviar = async function (url, dados) {
+    const csrf = document.querySelector('meta[name="csrf"]');
+    const resposta = await fetch(url, {
+      method: 'POST',
+      body: dados,
+      headers: { 'X-Requested-With': 'fetch', 'X-CSRF-Token': csrf ? csrf.content : '' },
+      credentials: 'same-origin',
+    });
+    return resposta.json();
+  };
+
   // ---------- Carrossel ----------
   // O deslize com impulso e o encaixe por página são do próprio navegador (CSS scroll-snap).
   // Aqui só atualizamos os pontinhos.

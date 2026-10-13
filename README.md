@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 1 (base visual)**. As telas da loja chegam nas próximas etapas.
+- Situação: **etapa 2 (catálogo)**. Já funcionam o Início, Esportes, Busca, Filtros e a página do Produto com adicionar à sacola.
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -43,7 +43,7 @@ Fica assim: `C:\xampp\htdocs\Triade_esportes_web\index.php`.
 ### 4. Abrir o site
 
 Acesse <http://localhost/Triade_esportes_web>.
-Nesta etapa aparece uma página de conferência dizendo **"Banco de dados conectado"** e quantos produtos existem.
+Deve abrir a tela Início da loja. Se aparecer **"Banco de dados não conectado"**, confira se o MySQL está ligado e se os scripts foram importados.
 
 Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M**, e escolha um iPhone ou Android no topo.
 
@@ -73,7 +73,12 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 
 ```
 Triade_esportes_web/
-├── index.php            página inicial (provisória nesta etapa)
+├── index.php            01 · Início
+├── esportes.php         02 · Esportes
+├── buscar.php           03 · Buscar
+├── resultados.php       04 · Resultados, 05 · Filtros e 06 · Sem resultado
+├── produto.php          07 · Produto, 08 · Guia de tamanhos e 09 · Adicionado
+├── api/sacola.php       adiciona itens à sacola (usado pelo JavaScript e pelo formulário)
 ├── guia-de-estilo.php   todos os componentes visuais numa página
 ├── includes/            arquivos internos, bloqueados para o navegador
 │   ├── bootstrap.php    carregado no topo de toda página
@@ -81,10 +86,12 @@ Triade_esportes_web/
 │   ├── db.php           conexão com o MySQL
 │   ├── funcoes.php      funções de apoio (preço, parcelas, CPF, segurança)
 │   ├── componentes.php  HTML dos componentes (card de produto, selos, painel...)
+│   ├── catalogo.php     consultas de produtos, busca e filtros
+│   ├── sacola.php       sacola guardada na sessão
 │   └── layout.php       moldura das páginas (cabeçalho e barra de abas)
 ├── assets/
-│   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css
-│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js
+│   ├── css/             tokens.css (cores e medidas do Figma), base.css, componentes.css, telas.css
+│   ├── js/              mola.js (animação de mola), painel.js, aviso.js, app.js, produto.js
 │   ├── fonts/           fonte Inter (licença livre OFL)
 │   └── img/             icones.svg (ícones e silhuetas dos produtos)
 ├── sql/                 scripts do banco de dados

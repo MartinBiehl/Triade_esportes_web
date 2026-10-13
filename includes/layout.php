@@ -113,6 +113,12 @@ function pagina_fim(array $opcoes = []): void
     </ul>
   </nav>
 <?php endif; ?>
+<?php if ($aviso = aviso_obter()): ?>
+  <div hidden id="aviso-pendente"
+       data-texto="<?= e($aviso['texto']) ?>"
+       data-tipo="<?= e($aviso['tipo']) ?>"
+       <?php if ($aviso['acao']): ?>data-acao-rotulo="<?= e($aviso['acao']['rotulo']) ?>" data-acao-href="<?= e($aviso['acao']['href']) ?>"<?php endif; ?>></div>
+<?php endif; ?>
 <script src="<?= e(asset('js/mola.js')) ?>" defer></script>
 <script src="<?= e(asset('js/painel.js')) ?>" defer></script>
 <script src="<?= e(asset('js/aviso.js')) ?>" defer></script>
