@@ -7,7 +7,7 @@ checkout_exigir('endereco');
 
 $c = &checkout();
 $dados = $c['endereco'] ?? [
-    'destinatario' => $c['identificacao']['nome'] ?? '', 'cep' => '', 'logradouro' => '', 'numero' => '',
+    'destinatario' => $c['identificacao']['nome'] ?? '', 'cep' => cep_lembrado(), 'logradouro' => '', 'numero' => '',
     'complemento' => '', 'bairro' => '', 'cidade' => '', 'uf' => 'RS',
 ];
 $erros = [];

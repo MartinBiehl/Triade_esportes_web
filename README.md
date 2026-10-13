@@ -4,7 +4,7 @@ E-commerce mobile da Triade Esporte, loja de materiais esportivos de São Leopol
 Trabalho acadêmico feito com **HTML5, CSS3, JavaScript puro, PHP 8 e MySQL**.
 
 - Design: [Figma · Triade Esporte App Mobile](https://www.figma.com/design/fBpNCyeZ07WWK659mNd6yV)
-- Situação: **etapa 6 (institucional e estados)**. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular.
+- Situação: **etapa 8 (frete pelo CEP)**. A etapa 7 (painel da loja) ficou para depois. Já funcionam o catálogo, a Sacola, a compra completa (Pix, cartão e boleto simulados), a conta do cliente, as páginas de Trocas e Sobre, a tela Sem internet, o carregamento com esqueleto e o site instalável no celular.
 - Guia de estilo com todos os componentes: `guia-de-estilo.php`
 
 ---
@@ -68,7 +68,7 @@ Para ver como fica no celular: no Chrome, aperte **F12** e depois **Ctrl+Shift+M
 Entre com `ana@exemplo.com` / `triade123`. Ela já tem 2 pedidos (um a caminho, com código de rastreio), 1 endereço e favoritos.
 O "Esqueci minha senha" não manda e-mail de verdade: o link para criar a senha nova aparece na própria tela, marcado como simulação.
 
-O frete ainda tem valores fixos (PAC, SEDEX, Transportadora e Retirada). O cálculo por região do CEP fica para a etapa 8. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
+O frete também é simulado: o preço e o prazo mudam conforme a região do CEP dentro do RS (tabela abaixo). Dá para calcular na página do produto. Os dados do cartão nunca são gravados: o banco guarda só a bandeira e os 4 últimos números.
 
 ---
 
@@ -176,6 +176,19 @@ Ficam todas em `includes/config.php`. Foram definidas no design e **ainda não f
 | Frete grátis | PAC grátis acima de R$ 399 |
 | Retirada | grátis no depósito em São Leopoldo |
 | Trocas | 30 dias |
+
+## Frete por região (simulado)
+
+Não há ligação com os Correios. O RS foi dividido pelas faixas de CEP; quanto mais longe de São Leopoldo, mais caro e demorado. Os valores ficam em `includes/frete.php`.
+
+| Região | CEPs | PAC | SEDEX | Transportadora |
+|---|---|---|---|---|
+| Grande Porto Alegre | 90000 a 94999 | R$ 14,90 · 2 a 4 dias | R$ 24,90 · 1 a 2 dias | R$ 19,90 · 2 a 3 dias |
+| Serra, Litoral Norte e Vales | 95000 a 95999 | R$ 22,90 · 4 a 6 dias | R$ 34,90 · 2 a 3 dias | R$ 27,90 · 3 a 5 dias |
+| Sul e Centro do estado | 96000 a 97999 | R$ 27,90 · 5 a 8 dias | R$ 42,90 · 2 a 4 dias | R$ 32,90 · 4 a 7 dias |
+| Norte, Missões e Fronteira | 98000 a 99999 | R$ 31,90 · 6 a 9 dias | R$ 49,90 · 3 a 5 dias | R$ 36,90 · 5 a 8 dias |
+
+Prazos em dias úteis. PAC grátis acima de R$ 399 em todo o RS. Retirada em São Leopoldo: grátis, pronta em 1 dia útil.
 
 ## Banco de dados
 

@@ -339,7 +339,7 @@ function criar_pedido(?int $cliente_id = null): array
                 $endereco['cep'] ?? null, $endereco['logradouro'] ?? null, $endereco['numero'] ?? null,
                 ($endereco['complemento'] ?? '') !== '' ? $endereco['complemento'] : null,
                 $endereco['bairro'] ?? null, $endereco['cidade'] ?? null, $endereco['uf'] ?? null,
-                $entrega, texto_prazo($entrega), $pagamento['tipo'], $pagamento['parcelas'] ?? 1,
+                $entrega, texto_prazo($entrega, $endereco['cep'] ?? ''), $pagamento['tipo'], $pagamento['parcelas'] ?? 1,
                 $totais['subtotal'], $totais['frete'], $totais['desconto'], $totais['total'], $status,
             ]
         );

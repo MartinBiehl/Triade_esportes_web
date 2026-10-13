@@ -494,3 +494,10 @@ input:focus-visible + .chip { outline: 2px solid var(--color-brand-primary); out
   .carregando { animation: none; }
   .esqueleto::after { animation: none; }
 }
+
+/* =================================================================
+   Etapa 8 · Frete pelo CEP
+   ================================================================= */
+.frete-cep__linha { display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-sm); align-items: start; }
+.frete-cep__linha .botao { height: 52px; margin-top: 24px; }
+#frete-resultado[aria-busy="true"] { opacity: 0.5; transition: opacity var(--duracao-curta); }
